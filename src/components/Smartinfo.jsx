@@ -1,5 +1,6 @@
 import React from "react";
 import { FiArrowRight } from "react-icons/fi";
+import { Link } from "react-router-dom";
 
 const SmartSaveLogo = ({ className = "h-10 w-40" }) => {
   return (
@@ -92,7 +93,7 @@ const Smartinfo = () => {
         </aside>
 
         <section className="flex items-center bg-white px-6 py-12 text-slate-950 sm:px-10 lg:px-20">
-          <div className="mx-auto w-full max-w-2xl ml-[5rem]">
+          <div className="mx-auto w-full max-w-2xl ml-20">
             <div className="mb-10 inline-grid h-14 w-40 place-items-center rounded-2xl bg-emerald-50">
               <SmartSaveLogo className="h-10 w-36" />
             </div>
@@ -147,12 +148,14 @@ const Smartinfo = () => {
               >
                 <FiArrowRight className="text-2xl transition group-hover:translate-x-1" />
               </button>
-              <button
-                type="button"
-                className="h-16 rounded-2xl px-6 text-lg font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
-              >
-                Skip
-              </button>
+              <Link to="/signup">
+                <button 
+                  type="button"
+                  className="h-16 rounded-2xl px-6 text-lg font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
+                >
+                  Next 
+                </button>
+              </Link>
             </div>
 
             <div className="mt-11 flex items-center gap-3">
