@@ -1,4 +1,3 @@
-import React from 'react';
 import SignupInfo from '../components/Signupinfo';
 
 

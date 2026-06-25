@@ -1,4 +1,3 @@
-import React from "react";
 import LoginInfo from "../components/Logininfo";
 
 const Login = () => {

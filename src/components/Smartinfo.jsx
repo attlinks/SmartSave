@@ -1,4 +1,3 @@
-import React from "react";
 import { FiArrowRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
@@ -84,12 +83,6 @@ const Smartinfo = () => {
               </div>
             </div>
           </div>
-
-          <div className="flex items-center gap-3">
-            <span className="h-1.5 w-12 rounded-full bg-emerald-400" />
-            <span className="h-1.5 w-1.5 rounded-full bg-white/45" />
-            <span className="h-1.5 w-1.5 rounded-full bg-white/45" />
-          </div>
         </aside>
 
         <section className="flex items-center bg-white px-6 py-12 text-slate-950 sm:px-10 lg:px-20">
@@ -149,20 +142,16 @@ const Smartinfo = () => {
                 <FiArrowRight className="text-2xl transition group-hover:translate-x-1" />
               </button>
               <Link to="/signup">
-                <button 
+                <button
                   type="button"
                   className="h-16 rounded-2xl px-6 text-lg font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
                 >
-                  Next 
+                  Next
                 </button>
               </Link>
             </div>
 
-            <div className="mt-11 flex items-center gap-3">
-              <span className="h-1.5 w-12 rounded-full bg-emerald-400" />
-              <span className="h-2 w-2 rounded-full bg-slate-300" />
-              <span className="h-2 w-2 rounded-full bg-slate-300" />
-            </div>
+            {/*  */}
           </div>
         </section>
       </section>
