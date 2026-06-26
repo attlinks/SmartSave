@@ -1,4 +1,3 @@
-import React from 'react';
 import SignupInfo from '../components/Signupinfo';
 import {useState} from 'react';
 
@@ -43,6 +42,5 @@ const Signup = () => {
     </div> 
   );
 };
-
 
 export default Signup;

@@ -1,24 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import React from "react";
+import LoginInfo from "../components/Logininfo";
 
-const LoginInfo = () => {
-  const navigate = useNavigate();
-
-  const [showPassword, setShowPassword] = useState(false);
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleLogin = async () => {
-    alert("Login Successful");
-    navigate("/dashboard");
-  };
-
+const Login = () => {
   return (
     <div className="flex min-h-screen">
       {/* Left Section */}
