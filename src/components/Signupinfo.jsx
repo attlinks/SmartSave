@@ -1,28 +1,34 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const SignupInfo = () => {
+const SignupInfo = () =>
+  
+  {
   const [showPassword, setShowPassword] = useState(false);
 const [form, setForm] = useState({ name: "", email: "", password: "" });
-
+const navigate = useNavigate();
 const [error, setError] = useState("");
 function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value })
     setError('')
   }
 
-  function handleSubmit(e) {
-    e.preventDefault()
+ async function handleSubmit(e) {
+  e.preventDefault();
 
-    if (!form.name || !form.email || !form.password) {
-   setError('Please fill in all fields')
-   return
-    }
+  if (!form.name || !form.email || !form.password) {
+    setError("Please fill in all fields");
+    return;
+  }
 
-    if (form.password.length <8) {
-        setError('Password must be at least 8 characters')
-        return
-    }
+  if (form.password.length < 8) {
+    setError("Password must be at least 8 characters");
+    return;
+  }
+
+  alert("Account created successfully!");
+  navigate("/dashboard");
 }
 
 
