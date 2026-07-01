@@ -26,7 +26,7 @@ const Goals = () => {
         </div>
 
         <Link
-          to="/dashboardlayout/creategoal"
+          to="/dashboard/creategoal"
           className="flex items-center gap-2 rounded-xl bg-[#00d492] px-3 py-3 text-xl font-medium text-white transition hover:bg-[#007a55]"
         >
           <FiPlus />
@@ -137,6 +137,15 @@ const Goals = () => {
                       {goal.formattedDeadline}
                     </p>
                   </div>
+                </div>
+
+                <div className="mt-6">
+                  <Link
+                    to={`/dashboard/goal/${goal.id}`}
+                    className="inline-flex rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100"
+                  >
+                    View details
+                  </Link>
                 </div>
               </div>
             </article>

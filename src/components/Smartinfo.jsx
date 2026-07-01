@@ -56,9 +56,9 @@ const SmartSaveLogo = ({ className = "h-10 w-40" }) => {
 
 const Smartinfo = () => {
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-(--surface-muted) text-(--text-primary) transition-colors duration-300">
       <section className="grid min-h-screen overflow-hidden lg:grid-cols-[37%_63%]">
-        <aside className="relative flex min-h-[46vh] flex-col justify-between bg-black px-6 py-8 sm:px-10 lg:min-h-screen lg:px-14 lg:py-12">
+        <aside className="relative flex min-h-[46vh] flex-col justify-between bg-black px-6 py-8 text-white sm:px-10 lg:min-h-screen lg:px-14 lg:py-12">
           <div className="flex items-center gap-4">
             <div className="grid h-16 w-40 place-items-center rounded-2xl bg-white shadow-[0_0_40px_rgba(52,211,153,0.35)]">
               <SmartSaveLogo className="h-10 w-40" />
@@ -85,8 +85,8 @@ const Smartinfo = () => {
           </div>
         </aside>
 
-        <section className="flex items-center bg-white px-6 py-12 text-slate-950 sm:px-10 lg:px-20">
-          <div className="mx-auto w-full max-w-2xl ml-20">
+        <section className="flex items-center bg-(--surface) px-6 py-12 text-(--text-primary) sm:px-10 lg:px-20">
+          <div className="mx-auto ml-20 w-full max-w-2xl">
             <div className="mb-10 inline-grid h-14 w-40 place-items-center rounded-2xl bg-emerald-50">
               <SmartSaveLogo className="h-10 w-36" />
             </div>
@@ -107,11 +107,11 @@ const Smartinfo = () => {
                     lineHeight: "35.75px",
                   }}
                 >
-                  Save With Purpose, Achieve With <br></br>Confidence.
+                  Save With Purpose, Achieve With <br />Confidence.
                 </h2>
               </div>
 
-              <div className="hidden h-28 w-28 place-items-center rounded-full border border-slate-200 lg:grid">
+              <div className="hidden h-28 w-28 place-items-center rounded-full border border-(--border) lg:grid">
                 <span className="h-16 w-16 rounded-full bg-emerald-400 shadow-[0_18px_45px_rgba(16,185,129,0.3)]" />
               </div>
             </div>
@@ -144,14 +144,12 @@ const Smartinfo = () => {
               <Link to="/signup">
                 <button
                   type="button"
-                  className="h-16 rounded-2xl px-6 text-lg font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-950"
+                  className="h-16 rounded-2xl px-6 text-lg font-semibold text-(--text-muted) transition hover:bg-(--surface-muted) hover:text-(--text-primary)"
                 >
                   Next
                 </button>
               </Link>
             </div>
-
-            {/*  */}
           </div>
         </section>
       </section>

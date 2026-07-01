@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useAuth } from "../context/AuthContext";
 
 const LoginInfo = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -9,6 +10,7 @@ const LoginInfo = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -18,14 +20,19 @@ const LoginInfo = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    
-    alert("Login successful!");
-    navigate("/");
-    setLoading(false);
+
+    try {
+      await login(email, password);
+      navigate("/dashboard", { state: { greetingType: "welcomeBack" } });
+    } catch (authError) {
+      setError(authError.message || "Unable to sign in.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-(--surface-muted) text-(--text-primary)">
       {/* Left Section */}
       <div className="w-3/5 bg-black flex flex-col justify-center items-center">
         <h1 className="text-6xl font-bold text-emerald-400">Smart Save</h1>
@@ -36,28 +43,28 @@ const LoginInfo = () => {
       </div>
 
       {/* Right Section */}
-      <div className="w-2/5 bg-gray-50 flex items-center justify-center px-12">
+      <div className="w-2/5 bg-(--surface) flex items-center justify-center px-12">
         <div className="w-full max-w-md">
-          <h1 className="text-4xl font-bold text-slate-900">Welcome Back</h1>
+          <h1 className="text-4xl font-bold text-(--text-primary)">Welcome Back</h1>
 
-          <p className="text-gray-500 mt-2 mb-8">Sign in to continue</p>
+          <p className="text-(--text-muted) mt-2 mb-8">Sign in to continue</p>
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label className="block mb-2">Email Address</label>
+              <label className="block mb-2 text-(--text-primary)">Email Address</label>
 
               <input
                 type="email"
                 placeholder="Enter your email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-4 rounded-xl bg-gray-100 outline-none"
+                className="w-full p-4 rounded-xl bg-(--surface-muted) text-(--text-primary) outline-none"
                 required
               />
             </div>
 
             <div>
-              <label className="block mb-2">Password</label>
+              <label className="block mb-2 text-(--text-primary)">Password</label>
 
               <div className="relative">
                 <input
@@ -65,13 +72,13 @@ const LoginInfo = () => {
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full p-4 rounded-xl bg-gray-100 outline-none pr-12"
+                  className="w-full p-4 rounded-xl bg-(--surface-muted) text-(--text-primary) outline-none pr-12"
                   required
                 />
                 <button
                   type="button"
                   onClick={togglePasswordVisibility}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-(--text-muted) hover:text-(--text-primary) focus:outline-none"
                 >
                   {showPassword ? (
                     <AiOutlineEyeInvisible size={20} />
@@ -89,7 +96,7 @@ const LoginInfo = () => {
             )}
 
             <div className="flex justify-between">
-              <label>
+              <label className="text-(--text-primary)">
                 <input type="checkbox" />
                 <span className="ml-2">Remember me</span>
               </label>
@@ -105,7 +112,7 @@ const LoginInfo = () => {
               {loading ? "Signing In..." : "Sign In"}
             </button>
 
-            <p className="text-center text-gray-500">
+            <p className="text-center text-(--text-muted)">
               Don't have an account?
               <Link to="/signup" className="text-emerald-500 ml-2 font-medium">
                 Sign Up

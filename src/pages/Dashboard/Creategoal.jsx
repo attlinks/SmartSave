@@ -1,5 +1,6 @@
 import { FiArrowLeft, FiCalendar, FiDollarSign } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import { saveGoal } from "../../utils/goalsStorage";
 
 const SmartSaveLogo = ({ className = "h-10 w-40" }) => {
@@ -57,28 +58,31 @@ const SmartSaveLogo = ({ className = "h-10 w-40" }) => {
 
 const Creategoal = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    saveGoal({
-      goalName: formData.get("goalName"),
-      targetAmount: formData.get("targetAmount"),
-      deadline: formData.get("deadline"),
-      category: formData.get("category"),
-      note: formData.get("note"),
-    });
+    saveGoal(
+      {
+        goalName: formData.get("goalName"),
+        targetAmount: formData.get("targetAmount"),
+        deadline: formData.get("deadline"),
+        category: formData.get("category"),
+        note: formData.get("note"),
+      },
+      user?.uid,
+    );
 
-    navigate("/dashboardlayout/goals");
+    navigate("/dashboard/goals");
   };
 
   return (
     <div className="min-h-screen bg-slate-50 p-4 text-slate-950 md:p-6">
       <div className="mx-auto max-w-3xl">
         <Link
-          to="/dashboardlayout"
-          className="mb-5 inline-flex items-center gap-2 text-sm font-bold text-emerald-700"
+            to="/dashboard"
         >
           <FiArrowLeft />
           Back to dashboard
@@ -199,7 +203,7 @@ const Creategoal = () => {
 
             <div className="flex flex-col gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:justify-end">
               <Link
-                to="/dashboardlayout"
+                to="/dashboard"
                 className="rounded-lg border border-slate-200 px-5 py-3 text-center text-sm font-bold text-slate-600 transition hover:bg-slate-50"
               >
                 Cancel

@@ -40,12 +40,17 @@ const stats = [
 ];
 
 const actions = [
-  { label: "Add Money", icon: FiPlusCircle, bg: "bg-emerald-50" },
+  {
+    label: "Add Money",
+    icon: FiPlusCircle,
+    bg: "bg-emerald-50",
+    to: "/dashboard/goals",
+  },
   {
     label: "Create Goal",
     icon: FiTarget,
     bg: "bg-blue-50",
-    to: "/dashboardlayout/creategoal",
+    to: "/dashboard/creategoal",
   },
   { label: "Transfer", icon: FiSend, bg: "bg-violet-50" },
   { label: "Withdraw", icon: FiDownload, bg: "bg-orange-50" },
@@ -133,7 +138,7 @@ const Summary = () => {
             <div className="mb-5 flex items-center justify-between">
               <h2 className="text-lg font-bold">Your Goals</h2>
               <Link
-                to="/dashboardlayout/goals"
+                to="/dashboard/goals"
                 className="text-sm font-bold text-emerald-700"
               >
                 View All Goals

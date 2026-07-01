@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FiEye, FiEyeOff, FiLock, FiMail, FiUser } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const leftSectionImages = ["/images/focus3.png", "/images/focus4.jpg"];
 
@@ -10,14 +11,16 @@ const SignupInfo = () => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { signup } = useAuth();
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
     setError("");
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     if (!form.name || !form.email || !form.password) {
@@ -30,8 +33,16 @@ const SignupInfo = () => {
       return;
     }
 
-    alert("Account created successfully!");
-    navigate("/dashboard");
+    setLoading(true);
+
+    try {
+      await signup(form.email, form.password, form.name);
+      navigate("/dashboard", { state: { greetingType: "hello" } });
+    } catch (authError) {
+      setError(authError.message || "Unable to create an account.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -45,7 +56,7 @@ const SignupInfo = () => {
   }, []);
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-(--surface-muted) text-(--text-primary)">
       {/* Left Section */}
       <div
         className="relative flex w-3/5 flex-col items-center justify-center overflow-hidden bg-cover bg-center transition-all duration-700"
@@ -64,20 +75,20 @@ const SignupInfo = () => {
       </div>
 
       {/* Right Section */}
-      <div className="flex w-2/5 items-center justify-center bg-white px-12">
+      <div className="flex w-2/5 items-center justify-center bg-(--surface) px-12">
         <div className="w-full max-w-lg">
-          <h1 className="text-4xl font-bold text-slate-900">Create Account</h1>
+          <h1 className="text-4xl font-bold text-(--text-primary)">Create Account</h1>
 
-          <p className="mb-6 mt-2 text-gray-500">
+          <p className="mb-6 mt-2 text-(--text-muted)">
             Start your Smart Save journey today
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="mb-2 block text-slate-700">Full Name</label>
+              <label className="mb-2 block text-(--text-primary)">Full Name</label>
 
               <div className="relative">
-                <FiUser className="absolute left-5 top-1/2 -translate-y-1/2 text-xl text-slate-400" />
+                <FiUser className="absolute left-5 top-1/2 -translate-y-1/2 text-xl text-(--text-muted)" />
                 <input
                   type="text"
                   name="name"
@@ -90,10 +101,10 @@ const SignupInfo = () => {
             </div>
 
             <div>
-              <label className="mb-2 block text-slate-700">Email Address</label>
+              <label className="mb-2 block text-(--text-primary)">Email Address</label>
 
               <div className="relative">
-                <FiMail className="absolute left-5 top-1/2 -translate-y-1/2 text-xl text-slate-400" />
+                <FiMail className="absolute left-5 top-1/2 -translate-y-1/2 text-xl text-(--text-muted)" />
                 <input
                   type="email"
                   name="email"
@@ -106,22 +117,22 @@ const SignupInfo = () => {
             </div>
 
             <div>
-              <label className="mb-2 block text-slate-700">Password</label>
+              <label className="mb-2 block text-(--text-primary)">Password</label>
 
               <div className="relative">
-                <FiLock className="absolute left-5 top-1/2 -translate-y-1/2 text-xl text-slate-400" />
+                <FiLock className="absolute left-5 top-1/2 -translate-y-1/2 text-xl text-(--text-muted)" />
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
                   value={form.password}
                   onChange={handleChange}
                   placeholder="Create a password"
-                  className="w-full rounded-xl bg-gray-100 py-4 pl-14 pr-14 text-lg outline-none"
+                  className="w-full rounded-xl bg-(--surface-muted) py-4 pl-14 pr-14 text-lg text-(--text-primary) outline-none"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute inset-y-0 right-5 flex items-center justify-center text-xl text-slate-400 hover:text-slate-700"
+                  className="absolute inset-y-0 right-5 flex items-center justify-center text-xl text-(--text-muted) hover:text-(--text-primary)"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <FiEyeOff /> : <FiEye />}
@@ -149,7 +160,7 @@ const SignupInfo = () => {
               Create Account
             </button>
 
-            <p className="text-center text-gray-500">
+            <p className="text-center text-(--text-muted)">
               Already have an account?
               <Link to="/login" className="text-emerald-500 ml-2 font-medium">
                 Sign In

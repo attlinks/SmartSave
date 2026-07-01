@@ -3,22 +3,40 @@ import PreLogin from "./pages/PreLogin";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import DashboardLayout from "./pages/Dashboard/DashboardLayout";
+import RequireAuth from "./components/RequireAuth";
+import ThemeToggle from "./components/ThemeToggle";
 // import Overview from "./pages/Dashboard/Overview";
 import Summary from "./pages/Dashboard/Summary";
 import Creategoal from "./pages/Dashboard/Creategoal";
 import Goals from "./pages/Dashboard/Goals";
+import GoalDetail from "./pages/Dashboard/GoalDetail";
+import Profiles from "./pages/Dashboard/Profiles";
+import Notifications from "./pages/Dashboard/Notifications";
+import Settings from "./pages/Dashboard/Settings";
 
 const App = () => {
   return (
     <BrowserRouter>
+      <ThemeToggle className="fixed right-4 top-4 z-50 md:right-6 md:top-6" />
       <Routes>
         <Route path="/" element={<PreLogin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboardlayout" element={<DashboardLayout />}>
+        <Route
+          path="/dashboard"
+          element={
+            <RequireAuth>
+              <DashboardLayout />
+            </RequireAuth>
+          }
+        >
           <Route index element={<Summary />} />
           <Route path="goals" element={<Goals />} />
           <Route path="creategoal" element={<Creategoal />} />
+          <Route path="goal/:id" element={<GoalDetail />} />
+          <Route path="profiles" element={<Profiles />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,1 +1,100 @@
 @import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  background: #f8fafc;
+  color: #0f172a;
+  --surface: #ffffff;
+  --surface-muted: #f8fafc;
+  --text-primary: #0f172a;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+}
+
+html.dark {
+  color-scheme: dark;
+  --surface: #111827;
+  --surface-muted: #0f172a;
+  --text-primary: #e2e8f0;
+  --text-muted: #94a3b8;
+  --border: #334155;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--surface-muted);
+  color: var(--text-primary);
+}
+
+html.dark body {
+  background: var(--surface-muted);
+  color: var(--text-primary);
+}
+
+html.dark .bg-white,
+html.dark .bg-slate-50,
+html.dark .bg-gray-50,
+html.dark .bg-stone-100,
+html.dark .bg-slate-100,
+html.dark .bg-emerald-50,
+html.dark .bg-blue-50,
+html.dark .bg-violet-50,
+html.dark .bg-orange-50,
+html.dark .bg-[#f8fafc] {
+  background-color: var(--surface) !important;
+}
+
+html.dark .bg-[#fff7ed],
+html.dark .bg-[#00d492],
+html.dark .bg-[#007a55],
+html.dark .bg-[#f5f6f8],
+html.dark .bg-[#111827] {
+  background-color: #111827 !important;
+}
+
+html.dark .text-slate-950,
+html.dark .text-slate-900,
+html.dark .text-stone-800,
+html.dark .text-stone-700,
+html.dark .text-stone-500,
+html.dark .text-slate-800,
+html.dark .text-slate-700,
+html.dark .text-black,
+html.dark .text-[#0f172a] {
+  color: var(--text-primary) !important;
+}
+
+html.dark .text-slate-400,
+html.dark .text-stone-400,
+html.dark .text-gray-500,
+html.dark .text-slate-500,
+html.dark .text-slate-400,
+html.dark .text-[#64748b] {
+  color: var(--text-muted) !important;
+}
+
+html.dark .border-slate-200,
+html.dark .border-stone-200,
+html.dark .border-slate-100,
+html.dark .border-stone-100,
+html.dark .border-gray-200,
+html.dark .border-[#e2e8f0] {
+  border-color: var(--border) !important;
+}
+
+html.dark .shadow-sm {
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.2) !important;
+}
+
+html.dark .bg-emerald-50 {
+  background-color: #064e3b !important;
+}
+
+html.dark .bg-emerald-100 {
+  background-color: #065f46 !important;
+}
+
+html.dark .bg-white/70 {
+  background-color: rgba(17, 24, 39, 0.7) !important;
+}
