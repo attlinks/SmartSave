@@ -1,5 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { FiUser, FiMail, FiSmile } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 const profileItems = [
@@ -9,7 +10,10 @@ const profileItems = [
 ];
 
 const Profiles = () => {
-  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { user, updateUserProfile } = useAuth();
+  const [editing, setEditing] = useState(false);
+  const [name, setName] = useState("");
   const profileData = useMemo(
     () =>
       profileItems.map((item) => ({
@@ -58,6 +62,33 @@ const Profiles = () => {
           })}
         </div>
 
+        {editing && (
+          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 className="text-lg font-bold text-slate-900">Edit Profile</h2>
+            <div className="mt-4">
+              <label className="block text-sm text-slate-700">Name</label>
+              <input value={name} onChange={(e) => setName(e.target.value)} className="mt-1 w-full rounded-md border px-3 py-2" />
+              <div className="mt-4 flex gap-2">
+                <button
+                  type="button"
+                  onClick={async () => {
+                    try {
+                      await updateUserProfile({ displayName: name });
+                      setEditing(false);
+                    } catch (e) {
+                      console.error(e);
+                    }
+                  }}
+                  className="rounded-2xl bg-emerald-600 px-4 py-2 text-white"
+                >
+                  Save
+                </button>
+                <button type="button" onClick={() => setEditing(false)} className="rounded-2xl border px-4 py-2">Cancel</button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 className="text-xl font-bold text-slate-900">Quick profile actions</h2>
           <p className="mt-3 text-sm text-slate-500">
@@ -67,12 +98,14 @@ const Profiles = () => {
             <button
               type="button"
               className="rounded-2xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700"
+              onClick={() => { setName(user?.displayName || ''); setEditing(true); }}
             >
               Edit profile
             </button>
             <button
               type="button"
               className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+              onClick={() => navigate('/dashboard/settings', { state: { section: 'security' } })}
             >
               View account security
             </button>

@@ -3,23 +3,8 @@ import { db } from "../firebase";
 
 const GOALS_STORAGE_KEY = "smartsave_goals";
 
-const categoryStyles = {
-  laptop: {
-    label: "Laptop",
-    image: "/images/goal1.jpg",
-  },
-  travel: {
-    label: "Travel",
-    image: "/images/goal2.jpg",
-  },
-  home: {
-    label: "Home",
-    image: "/images/goal3.jpg",
-  },
-  vacation: {
-    label: "Vacation",
-    image: "/images/goal4.jpg",
-  },
+export const clearStoredGoals = () => {
+  localStorage.setItem(GOALS_STORAGE_KEY, JSON.stringify([]));
 };
 
 const formatCurrency = (amount) => {
@@ -42,7 +27,6 @@ const formatDate = (date) => {
 };
 
 const normalizeGoal = (goal) => {
-  const goalCategory = goal.category || "laptop";
   const id = goal.id || crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`;
   const title = goal.title || goal.name || String(goal.goalName || "").trim();
   const targetAmount = Number(goal.targetAmount) || 0;
@@ -64,10 +48,6 @@ const normalizeGoal = (goal) => {
     saved: formatCurrency(savedAmount),
     deadline,
     formattedDeadline: formatDate(deadline),
-    category: goalCategory,
-    categoryLabel:
-      goal.categoryLabel || categoryStyles[goalCategory]?.label || "Goal",
-    image: categoryStyles[goalCategory]?.image || categoryStyles.laptop.image,
     progress: goal.progress ?? percent,
     percent: goal.percent ?? percent,
     status:
@@ -104,12 +84,11 @@ export const getStoredGoals = () => {
 };
 
 export const saveGoal = (
-  { goalName, targetAmount, deadline, category, note },
+  { goalName, targetAmount, deadline, note },
   userId,
 ) => {
   const title = String(goalName || "").trim();
   const amount = Number(targetAmount);
-  const goalCategory = String(category || "laptop");
   const newGoal = {
     id: crypto.randomUUID(),
     title,
@@ -120,13 +99,10 @@ export const saveGoal = (
     saved: formatCurrency(0),
     deadline: String(deadline || ""),
     formattedDeadline: formatDate(deadline),
-    category: goalCategory,
-    categoryLabel: categoryStyles[goalCategory]?.label || "Goal",
     note: String(note || "").trim(),
     progress: 0,
     percent: 0,
     status: "Active",
-    image: categoryStyles[goalCategory]?.image || categoryStyles.laptop.image,
     createdAt: new Date().toISOString(),
   };
 

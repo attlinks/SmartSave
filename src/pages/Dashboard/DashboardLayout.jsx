@@ -166,7 +166,11 @@ const DashboardLayout = () => {
             </h1>
           </div>
           <div className="flex items-center gap-3">
-            <button className="flex items-center gap-2 rounded-xl bg-[#00d492] px-4 py-2 text-sm font-semibold text-black shadow-sm shadow-orange-200 transition-colors hover:bg-[#007a55]">
+            <button
+              type="button"
+              onClick={() => navigate('/dashboard/creategoal')}
+              className="flex items-center gap-2 rounded-xl bg-[#00d492] px-4 py-2 text-sm font-semibold text-black shadow-sm shadow-orange-200 transition-colors hover:bg-[#007a55]"
+            >
               <FiPlus />
               New
             </button>

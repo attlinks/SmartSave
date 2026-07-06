@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { FiShield, FiMoon, FiUser, FiZap } from "react-icons/fi";
 
 const Settings = () => {
@@ -11,6 +12,19 @@ const Settings = () => {
   const toggle = (key) => {
     setSettings((current) => ({ ...current, [key]: !current[key] }));
   };
+
+  const location = useLocation();
+  const secureRef = useRef(null);
+  const [highlightSecure, setHighlightSecure] = useState(false);
+
+  useEffect(() => {
+    if (location?.state?.section === "security") {
+      setHighlightSecure(true);
+      secureRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      const t = setTimeout(() => setHighlightSecure(false), 3000);
+      return () => clearTimeout(t);
+    }
+  }, [location]);
 
   return (
     <section className="min-h-screen bg-slate-50 p-4 text-slate-900 md:p-6">
@@ -32,7 +46,8 @@ const Settings = () => {
             return (
               <article
                 key={item.key}
-                className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"
+                ref={item.key === 'secureLogin' ? secureRef : undefined}
+                className={`rounded-3xl border border-slate-200 bg-white p-5 shadow-sm ${item.key === 'secureLogin' && highlightSecure ? 'ring-2 ring-emerald-300' : ''}`}
               >
                 <div className="flex items-center gap-3">
                   <span className="grid h-12 w-12 place-items-center rounded-2xl bg-slate-100 text-slate-700">

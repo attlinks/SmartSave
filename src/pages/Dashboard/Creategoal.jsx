@@ -69,7 +69,6 @@ const Creategoal = () => {
         goalName: formData.get("goalName"),
         targetAmount: formData.get("targetAmount"),
         deadline: formData.get("deadline"),
-        category: formData.get("category"),
         note: formData.get("note"),
       },
       user?.uid,
@@ -160,30 +159,6 @@ const Creategoal = () => {
               </div>
             </div>
 
-            <div>
-              <label
-                htmlFor="category"
-                className="mb-2 block text-sm font-bold text-slate-700"
-              >
-                Category
-              </label>
-              <select
-                id="category"
-                name="category"
-                className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
-                defaultValue=""
-                required
-              >
-                <option value="" disabled>
-                  Select a category
-                </option>
-
-                <option value="laptop">Laptop</option>
-                <option value="travel">Travel</option>
-                <option value="home">Home</option>
-                <option value="vacation">Vacation</option>
-              </select>
-            </div>
 
             <div>
               <label

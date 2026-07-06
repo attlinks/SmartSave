@@ -83,14 +83,10 @@ const Goals = () => {
               data-status={goal.status.toLowerCase()}
               className="flex w-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white md:w-[calc(50%-12px)] xl:w-[calc(33.333%-16px)]"
             >
-              <div className="relative h-40 overflow-hidden bg-black">
-                <img
-                  src={goal.image}
-                  alt={goal.title}
-                  className="h-full w-full object-cover"
-                />
+              <div className="flex items-center justify-between bg-slate-950 p-4 text-white">
+                <h2 className="text-lg font-bold">{goal.title}</h2>
                 <span
-                  className={`absolute right-3 top-3 rounded-md px-3 py-1.5 text-sm font-medium text-white ${
+                  className={`rounded-md px-3 py-1.5 text-sm font-medium ${
                     goal.status === "Completed"
                       ? "bg-green-500"
                       : "bg-orange-600"

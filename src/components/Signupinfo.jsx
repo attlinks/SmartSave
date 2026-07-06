@@ -3,12 +3,10 @@ import { FiEye, FiEyeOff, FiLock, FiMail, FiUser } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
-const leftSectionImages = ["/images/focus3.png", "/images/focus4.jpg"];
+import { clearStoredGoals } from "../utils/goalsStorage";
 
 const SignupInfo = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,6 +35,7 @@ const SignupInfo = () => {
 
     try {
       await signup(form.email, form.password, form.name);
+      clearStoredGoals();
       navigate("/dashboard", { state: { greetingType: "hello" } });
     } catch (authError) {
       setError(authError.message || "Unable to create an account.");
@@ -45,32 +44,17 @@ const SignupInfo = () => {
     }
   }
 
-  useEffect(() => {
-    const imageTimer = setInterval(() => {
-      setActiveImageIndex((currentIndex) =>
-        currentIndex === leftSectionImages.length - 1 ? 0 : currentIndex + 1,
-      );
-    }, 3000);
-
-    return () => clearInterval(imageTimer);
-  }, []);
-
   return (
     <div className="flex min-h-screen bg-(--surface-muted) text-(--text-primary)">
       {/* Left Section */}
-      <div
-        className="relative flex w-3/5 flex-col items-center justify-center overflow-hidden bg-cover bg-center transition-all duration-700"
-        style={{
-          backgroundImage: `url(${leftSectionImages[activeImageIndex]})`,
-        }}
-      >
-        <div className="absolute inset-0 bg-black/55" />
+      <div className="relative flex w-3/5 flex-col items-center justify-center overflow-hidden bg-slate-900 px-12">
+        <div className="absolute inset-0 bg-slate-900/90" />
         <h1 className="relative text-6xl font-bold text-emerald-400">
-          {/* Smart Save */}
+          Smart Save
         </h1>
 
         <p className="relative mt-4 text-lg text-gray-100">
-          {/* Save With Purpose, Achieve With Confidence */}
+          Save with purpose and focus on your goals.
         </p>
       </div>
 

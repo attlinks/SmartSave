@@ -1,6 +1,7 @@
 import {
   FiCreditCard,
   FiDownload,
+  FiEye,
   FiEyeOff,
   FiMoreVertical,
   FiPlusCircle,
@@ -8,7 +9,7 @@ import {
   FiTarget,
   FiTrendingUp,
 } from "react-icons/fi";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { getStoredGoals } from "../../utils/goalsStorage";
 
@@ -59,6 +60,8 @@ const actions = [
 const transactions = [];
 
 const Summary = () => {
+  const [showBalance, setShowBalance] = useState(false);
+  const [actionMessage, setActionMessage] = useState("");
   const goals = useMemo(() => getStoredGoals(), []);
   const activeGoals = goals.filter((goal) => goal.status === "Active");
   const totalSaved = goals.reduce(
@@ -67,7 +70,7 @@ const Summary = () => {
   );
   const summaryStats = stats.map((item) => {
     if (item.title === "Total Balance") {
-      return { ...item, value: "NGN 0.00" };
+      return { ...item, value: showBalance ? "NGN 0.00" : "****" };
     }
 
     if (item.title === "Active Goals") {
@@ -111,7 +114,14 @@ const Summary = () => {
                           {item.title}
                         </p>
                         {item.title === "Total Balance" && (
-                          <FiEyeOff className="text-slate-400" />
+                          <button
+                            type="button"
+                            className="text-slate-400"
+                            onClick={() => setShowBalance((prev) => !prev)}
+                            aria-label={showBalance ? "Hide balance" : "Show balance"}
+                          >
+                            {showBalance ? <FiEyeOff /> : <FiEye />}
+                          </button>
                         )}
                       </div>
                       <h2 className="mt-3 text-2xl font-bold text-slate-950">
@@ -157,11 +167,9 @@ const Summary = () => {
                     className="grid gap-4 py-4 md:grid-cols-[1fr_150px_24px]"
                   >
                     <div className="flex gap-4">
-                      <img
-                        src={goal.image}
-                        alt={goal.name}
-                        className="h-14 w-14 rounded-lg object-cover"
-                      />
+                      <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-slate-200 text-lg font-bold text-slate-700">
+                        {goal.name?.[0] || "G"}
+                      </div>
                       <div className="min-w-0 flex-1">
                         <h3 className="font-bold text-slate-950">
                           {goal.name}
@@ -222,6 +230,14 @@ const Summary = () => {
                   <button
                     key={action.label}
                     className={actionClassName}
+                    type="button"
+                    onClick={() =>
+                      setActionMessage(
+                        action.label === "Transfer"
+                          ? "Transfer is coming soon — check your goals to move funds between them."
+                          : "Withdrawal is coming soon — keep an eye on your balance and savings progress."
+                      )
+                    }
                   >
                     <Icon className="mx-auto text-3xl text-emerald-700" />
                     <span className="mt-3 block text-sm font-bold">
@@ -232,6 +248,12 @@ const Summary = () => {
               })}
             </div>
           </article>
+
+          {actionMessage && (
+            <article className="rounded-lg border border-emerald-100 bg-emerald-50 p-4 text-sm text-slate-900">
+              {actionMessage}
+            </article>
+          )}
 
           <article className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
             <div className="mb-5 flex items-center justify-between">
@@ -249,17 +271,9 @@ const Summary = () => {
               ) : (
                 transactions.map((item) => (
                   <div key={item.title + item.date} className="flex gap-3">
-                    {item.image ? (
-                      <img
-                        src={item.image}
-                        alt=""
-                        className="h-10 w-10 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="grid h-10 w-10 place-items-center rounded-full bg-orange-50 text-orange-600">
-                        <FiDownload />
-                      </div>
-                    )}
+                    <div className="grid h-10 w-10 place-items-center rounded-full bg-orange-50 text-orange-600">
+                      <FiDownload />
+                    </div>
 
                     <div className="min-w-0 flex-1">
                       <h3 className="truncate font-bold">{item.title}</h3>

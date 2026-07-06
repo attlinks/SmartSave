@@ -117,18 +117,10 @@ const GoalDetail = () => {
           <section className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-600">
-                  {goal.categoryLabel}
-                </p>
-                <h1 className="mt-3 text-3xl font-bold text-slate-950">
+                <h1 className="text-3xl font-bold text-slate-950">
                   {goal.title}
                 </h1>
               </div>
-              <img
-                src={goal.image}
-                alt={goal.title}
-                className="h-28 w-28 rounded-3xl object-cover"
-              />
             </div>
 
             <div className="mt-8 grid gap-5 sm:grid-cols-3">

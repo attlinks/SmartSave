@@ -51,8 +51,14 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => firebaseSignOut(auth);
 
+  const updateUserProfile = async (data) => {
+    if (!auth.currentUser) throw new Error("No authenticated user");
+    await updateProfile(auth.currentUser, data);
+    setUser({ ...auth.currentUser });
+  };
+
   const value = useMemo(
-    () => ({ user, loading, login, signup, logout }),
+    () => ({ user, loading, login, signup, logout, updateUserProfile }),
     [user, loading],
   );
 
