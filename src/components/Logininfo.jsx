@@ -1,7 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useAuth } from "../context/AuthContext";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const LoginInfo = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,6 +13,13 @@ const LoginInfo = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1200,
+      once: true,
+    });
+  }, []);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -35,9 +44,11 @@ const LoginInfo = () => {
     <div className="flex min-h-screen bg-(--surface-muted) text-(--text-primary)">
       {/* Left Section */}
       <div className="w-3/5 bg-black flex flex-col justify-center items-center">
-        <h1 className="text-6xl font-bold text-emerald-400">Smart Save</h1>
+        <h1 data-aos="zoom-in" className="text-6xl font-bold text-emerald-400">
+          Smart Save
+        </h1>
 
-        <p className="text-gray-300 mt-4 text-lg">
+        <p data-aos="fade-up" className="text-gray-300 mt-4 text-lg">
           Save With Purpose, Achieve With Confidence
         </p>
       </div>
@@ -45,13 +56,17 @@ const LoginInfo = () => {
       {/* Right Section */}
       <div className="w-2/5 bg-(--surface) flex items-center justify-center px-12">
         <div className="w-full max-w-md">
-          <h1 className="text-4xl font-bold text-(--text-primary)">Welcome Back</h1>
+          <h1 className="text-4xl font-bold text-(--text-primary)">
+            Welcome Back
+          </h1>
 
           <p className="text-(--text-muted) mt-2 mb-8">Sign in to continue</p>
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label className="block mb-2 text-(--text-primary)">Email Address</label>
+              <label className="block mb-2 text-(--text-primary)">
+                Email Address
+              </label>
 
               <input
                 type="email"
@@ -64,7 +79,9 @@ const LoginInfo = () => {
             </div>
 
             <div>
-              <label className="block mb-2 text-(--text-primary)">Password</label>
+              <label className="block mb-2 text-(--text-primary)">
+                Password
+              </label>
 
               <div className="relative">
                 <input
@@ -89,11 +106,7 @@ const LoginInfo = () => {
               </div>
             </div>
 
-            {error && (
-              <div className="text-red-500 text-sm">
-                {error}
-              </div>
-            )}
+            {error && <div className="text-red-500 text-sm">{error}</div>}
 
             <div className="flex justify-between">
               <label className="text-(--text-primary)">
@@ -101,7 +114,9 @@ const LoginInfo = () => {
                 <span className="ml-2">Remember me</span>
               </label>
 
-              <button className="text-emerald-500" type="button">Forgot password?</button>
+              <button className="text-emerald-500" type="button">
+                Forgot password?
+              </button>
             </div>
 
             <button

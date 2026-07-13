@@ -8,6 +8,7 @@ import {
 } from "react-icons/fi";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import ThemeToggle from "../../components/ThemeToggle";
 
 const SmartSaveLogo = ({ className = "h-10 w-40" }) => {
   return (
@@ -98,12 +99,12 @@ const DashboardLayout = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-stone-100">
-      <aside className="hidden md:flex w-56 flex-col border-r border-stone-200 bg-white shadow-sm">
+    <div className="flex min-h-screen bg-(--surface-muted) text-(--text-primary)">
+      <aside className="hidden w-56 flex-col border-r border-(--border) bg-(--surface) shadow-sm md:flex">
         <div className="px-5 py-5">
           <button
             onClick={() => navigate("/")}
-            className="grid h-14 w-40 place-items-center rounded-2xl bg-emerald-50 transition hover:bg-emerald-100"
+            className="grid h-14 w-40 place-items-center rounded-2xl bg-[#ecfdf5] transition hover:bg-[#d9fbe8] dark:bg-[#143227] dark:hover:bg-[#1d3b2f]"
             aria-label="Go to Smart Save home"
           >
             <SmartSaveLogo className="h-10 w-36" />
@@ -122,8 +123,8 @@ const DashboardLayout = () => {
                 className={({ isActive }) =>
                   `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
                     isActive
-                      ? "bg-[#00d492] text-black-600 shadow-sm"
-                      : "text-stone-500 hover:bg-[#fff7ed] hover:text-stone-800"
+                      ? "bg-[#00d492] text-slate-950 shadow-sm"
+                      : "text-(--text-muted) hover:bg-(--surface-muted) hover:text-(--text-primary)"
                   }`
                 }
               >
@@ -134,16 +135,16 @@ const DashboardLayout = () => {
           })}
         </nav>
 
-        <div className="border-t border-stone-100 px-4 py-4">
+        <div className="border-t border-(--border) px-4 py-4">
           <div className="flex items-center gap-3">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-[#00d492] to-[#007a55] text-xs font-bold text-white shadow-sm">
               <FiUser />
             </div>
             <div className="overflow-hidden">
-              <p className="truncate text-xs font-semibold text-stone-700">
+              <p className="truncate text-xs font-semibold text-(--text-primary)">
                 {displayName}
               </p>
-              <p className="truncate text-xs text-stone-400">
+              <p className="truncate text-xs text-(--text-muted)">
                 {user?.email || "Signed in user"}
               </p>
             </div>
@@ -152,23 +153,24 @@ const DashboardLayout = () => {
       </aside>
 
       <div className="flex flex-1 flex-col">
-        <header className="flex items-center justify-between border-b border-stone-200 bg-white px-4 md:px-8 py-4 shadow-sm">
+        <header className="flex items-center justify-between border-b border-(--border) bg-(--surface) px-4 py-4 shadow-sm md:px-8">
           <div>
-            <p className="text-xs text-stone-400">
+            <p className="text-xs text-(--text-muted)">
               {new Date().toLocaleDateString("en-US", {
                 weekday: "long",
                 month: "long",
                 day: "numeric",
               })}
             </p>
-            <h1 className="text-lg font-bold leading-tight text-stone-800">
+            <h1 className="text-lg font-bold leading-tight text-(--text-primary)">
               {getHeaderGreeting()}
             </h1>
           </div>
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <button
               type="button"
-              onClick={() => navigate('/dashboard/creategoal')}
+              onClick={() => navigate("/dashboard/creategoal")}
               className="flex items-center gap-2 rounded-xl bg-[#00d492] px-4 py-2 text-sm font-semibold text-black shadow-sm shadow-orange-200 transition-colors hover:bg-[#007a55]"
             >
               <FiPlus />
@@ -177,19 +179,19 @@ const DashboardLayout = () => {
             <button
               type="button"
               onClick={logout}
-              className="rounded-xl border border-stone-200 bg-white px-4 py-2 text-sm font-semibold text-stone-700 transition hover:bg-stone-100"
+              className="rounded-xl border border-(--border) bg-(--surface) px-4 py-2 text-sm font-semibold text-(--text-primary) transition hover:bg-(--surface-muted)"
             >
               Sign out
             </button>
           </div>
         </header>
 
-        <main className="flex-1 overflow-auto p-4 md:p-8">
+        <main className="flex-1 overflow-auto bg-(--surface-muted) p-4 md:p-8">
           <Outlet />
         </main>
         {/* Mobile bottom navigation */}
         <nav className="fixed bottom-4 left-4 right-4 z-40 md:hidden">
-          <div className="mx-auto max-w-lg rounded-2xl bg-white px-2 py-2 shadow-lg border border-stone-100 flex justify-between">
+          <div className="mx-auto flex max-w-lg justify-between rounded-2xl border border-(--border) bg-(--surface) px-2 py-2 shadow-lg">
             {navItems.map((item) => {
               const Icon = item.icon;
 
@@ -200,7 +202,7 @@ const DashboardLayout = () => {
                   end={item.end}
                   className={({ isActive }) =>
                     `flex-1 flex flex-col items-center gap-1 py-2 text-xs font-medium transition-all ${
-                      isActive ? "text-emerald-700" : "text-stone-500"
+                      isActive ? "text-emerald-600" : "text-(--text-muted)"
                     }`
                   }
                 >

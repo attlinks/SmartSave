@@ -80,16 +80,14 @@ const Creategoal = () => {
   return (
     <div className="min-h-screen bg-slate-50 p-4 text-slate-950 md:p-6">
       <div className="mx-auto max-w-3xl">
-        <Link
-            to="/dashboard"
-        >
+        <Link to="/dashboard">
           <FiArrowLeft />
           Back to dashboard
         </Link>
 
         <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm md:p-7">
           <div className="mb-7">
-            <div className="mb-4 inline-grid h-14 w-40 place-items-center rounded-2xl bg-emerald-50">
+            <div className="mb-4 inline-grid h-14 w-40 place-items-center rounded-2xl bg-[#ecfdf5] dark:bg-[#143227]">
               <SmartSaveLogo className="h-10 w-36" />
             </div>
             <h1 className="text-2xl font-black text-slate-950">Create Goal</h1>
@@ -158,7 +156,6 @@ const Creategoal = () => {
                 </div>
               </div>
             </div>
-
 
             <div>
               <label

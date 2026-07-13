@@ -27,11 +27,11 @@ const Profiles = () => {
   );
 
   return (
-    <section className="min-h-screen bg-slate-50 p-4 text-slate-900 md:p-6">
+    <section className="min-h-screen bg-(--surface-muted) p-4 text-(--text-primary) md:p-6">
       <div className="mx-auto max-w-4xl space-y-6">
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h1 className="text-3xl font-bold text-slate-900">Profile</h1>
-          <p className="mt-2 text-sm text-slate-500">
+        <div className="rounded-3xl border border-(--border) bg-(--surface) p-6 shadow-sm">
+          <h1 className="text-3xl font-bold text-(--text-primary)">Profile</h1>
+          <p className="mt-2 text-sm text-(--text-muted)">
             Manage your account details and view profile information.
           </p>
         </div>
@@ -42,17 +42,17 @@ const Profiles = () => {
             return (
               <article
                 key={item.label}
-                className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm"
+                className="rounded-3xl border border-(--border) bg-(--surface) p-5 shadow-sm"
               >
                 <div className="flex items-center gap-3">
-                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-50 text-emerald-700">
+                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-50 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
                     <Icon className="text-xl" />
                   </span>
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
                       {item.label}
                     </p>
-                    <p className="mt-2 text-lg font-semibold text-slate-900">
+                    <p className="mt-2 text-lg font-semibold text-(--text-primary)">
                       {item.value}
                     </p>
                   </div>
@@ -63,11 +63,17 @@ const Profiles = () => {
         </div>
 
         {editing && (
-          <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-lg font-bold text-slate-900">Edit Profile</h2>
+          <div className="rounded-3xl border border-(--border) bg-(--surface) p-6 shadow-sm">
+            <h2 className="text-lg font-bold text-(--text-primary)">
+              Edit Profile
+            </h2>
             <div className="mt-4">
-              <label className="block text-sm text-slate-700">Name</label>
-              <input value={name} onChange={(e) => setName(e.target.value)} className="mt-1 w-full rounded-md border px-3 py-2" />
+              <label className="block text-sm text-(--text-muted)">Name</label>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="mt-1 w-full rounded-md border border-(--border) bg-(--surface-muted) px-3 py-2 text-(--text-primary)"
+              />
               <div className="mt-4 flex gap-2">
                 <button
                   type="button"
@@ -83,29 +89,45 @@ const Profiles = () => {
                 >
                   Save
                 </button>
-                <button type="button" onClick={() => setEditing(false)} className="rounded-2xl border px-4 py-2">Cancel</button>
+                <button
+                  type="button"
+                  onClick={() => setEditing(false)}
+                  className="rounded-2xl border border-(--border) bg-(--surface) px-4 py-2 text-(--text-primary) hover:bg-(--surface-muted)"
+                >
+                  Cancel
+                </button>
               </div>
             </div>
           </div>
         )}
 
-        <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-xl font-bold text-slate-900">Quick profile actions</h2>
-          <p className="mt-3 text-sm text-slate-500">
-            Your profile page is ready. You can later add edit fields, change your profile picture, or configure account preferences here.
+        <div className="rounded-3xl border border-(--border) bg-(--surface) p-6 shadow-sm">
+          <h2 className="text-xl font-bold text-(--text-primary)">
+            Quick profile actions
+          </h2>
+          <p className="mt-3 text-sm text-(--text-muted)">
+            Your profile page is ready. You can later add edit fields, change
+            your profile picture, or configure account preferences here.
           </p>
           <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <button
               type="button"
               className="rounded-2xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700"
-              onClick={() => { setName(user?.displayName || ''); setEditing(true); }}
+              onClick={() => {
+                setName(user?.displayName || "");
+                setEditing(true);
+              }}
             >
               Edit profile
             </button>
             <button
               type="button"
-              className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
-              onClick={() => navigate('/dashboard/settings', { state: { section: 'security' } })}
+              className="rounded-2xl border border-(--border) bg-(--surface) px-4 py-3 text-sm font-semibold text-(--text-primary) transition hover:bg-(--surface-muted)"
+              onClick={() =>
+                navigate("/dashboard/settings", {
+                  state: { section: "security" },
+                })
+              }
             >
               View account security
             </button>

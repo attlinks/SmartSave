@@ -4,7 +4,6 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import DashboardLayout from "./pages/Dashboard/DashboardLayout";
 import RequireAuth from "./components/RequireAuth";
-import ThemeToggle from "./components/ThemeToggle";
 // import Overview from "./pages/Dashboard/Overview";
 import Summary from "./pages/Dashboard/Summary";
 import Creategoal from "./pages/Dashboard/Creategoal";
@@ -17,7 +16,6 @@ import Settings from "./pages/Dashboard/Settings";
 const App = () => {
   return (
     <BrowserRouter>
-      <ThemeToggle className="fixed right-4 top-4 z-50 md:right-6 md:top-6" />
       <Routes>
         <Route path="/" element={<PreLogin />} />
         <Route path="/signup" element={<Signup />} />

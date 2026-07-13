@@ -1,10 +1,61 @@
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  setDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 
 const GOALS_STORAGE_KEY = "smartsave_goals";
+const GOALS_STORAGE_ACTIVE_USER_KEY = "smartsave_goals_active_user";
+const GOALS_STORAGE_GUEST_ID = "guest";
 
-export const clearStoredGoals = () => {
-  localStorage.setItem(GOALS_STORAGE_KEY, JSON.stringify([]));
+const getActiveGoalsStorageUser = () =>
+  localStorage.getItem(GOALS_STORAGE_ACTIVE_USER_KEY) || GOALS_STORAGE_GUEST_ID;
+
+const getGoalsStorageKey = (userId) =>
+  `${GOALS_STORAGE_KEY}_${userId || getActiveGoalsStorageUser()}`;
+
+const getStoredRawGoals = (userId) => {
+  const scopedKey = getGoalsStorageKey(userId);
+  const scopedRaw = localStorage.getItem(scopedKey);
+
+  if (scopedRaw !== null) {
+    return { storageKey: scopedKey, raw: scopedRaw };
+  }
+
+  const legacyRaw = localStorage.getItem(GOALS_STORAGE_KEY);
+  if (legacyRaw !== null) {
+    // One-time migration path from legacy shared key into scoped key.
+    localStorage.setItem(scopedKey, legacyRaw);
+    localStorage.removeItem(GOALS_STORAGE_KEY);
+    return { storageKey: scopedKey, raw: legacyRaw };
+  }
+
+  return { storageKey: scopedKey, raw: null };
+};
+
+const setStoredGoals = (goals, userId) => {
+  const scopedKey = getGoalsStorageKey(userId);
+  localStorage.setItem(scopedKey, JSON.stringify(goals));
+};
+
+const emitGoalsUpdated = () => {
+  window.dispatchEvent(new Event("smartsave-goals-updated"));
+};
+
+export const setGoalsStorageUser = (userId) => {
+  localStorage.setItem(
+    GOALS_STORAGE_ACTIVE_USER_KEY,
+    userId || GOALS_STORAGE_GUEST_ID,
+  );
+  emitGoalsUpdated();
+};
+
+export const clearStoredGoals = (userId) => {
+  setStoredGoals([], userId);
+  emitGoalsUpdated();
 };
 
 const formatCurrency = (amount) => {
@@ -27,7 +78,8 @@ const formatDate = (date) => {
 };
 
 const normalizeGoal = (goal) => {
-  const id = goal.id || crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`;
+  const id =
+    goal.id || crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`;
   const title = goal.title || goal.name || String(goal.goalName || "").trim();
   const targetAmount = Number(goal.targetAmount) || 0;
   const savedAmount = Number(goal.savedAmount) || 0;
@@ -70,13 +122,20 @@ const updateGoalInFirestore = async (goal, userId) => {
   await setDoc(goalRef, goal, { merge: true });
 };
 
-export const getStoredGoals = () => {
+const deleteGoalFromFirestore = async (goalId, userId) => {
+  if (!userId) return;
+  const goalRef = doc(getGoalsCollection(userId), goalId);
+  await deleteDoc(goalRef);
+};
+
+export const getStoredGoals = (userId) => {
   try {
-    const storedGoals = JSON.parse(localStorage.getItem(GOALS_STORAGE_KEY));
+    const { storageKey, raw } = getStoredRawGoals(userId);
+    const storedGoals = JSON.parse(raw);
     if (!Array.isArray(storedGoals)) return [];
 
     const normalizedGoals = storedGoals.map((goal) => normalizeGoal(goal));
-    localStorage.setItem(GOALS_STORAGE_KEY, JSON.stringify(normalizedGoals));
+    localStorage.setItem(storageKey, JSON.stringify(normalizedGoals));
     return normalizedGoals;
   } catch {
     return [];
@@ -87,6 +146,8 @@ export const saveGoal = (
   { goalName, targetAmount, deadline, note },
   userId,
 ) => {
+  setGoalsStorageUser(userId);
+
   const title = String(goalName || "").trim();
   const amount = Number(targetAmount);
   const newGoal = {
@@ -106,8 +167,9 @@ export const saveGoal = (
     createdAt: new Date().toISOString(),
   };
 
-  const goals = [newGoal, ...getStoredGoals()];
-  localStorage.setItem(GOALS_STORAGE_KEY, JSON.stringify(goals));
+  const goals = [newGoal, ...getStoredGoals(userId)];
+  setStoredGoals(goals, userId);
+  emitGoalsUpdated();
 
   if (userId) {
     void saveGoalToFirestore(newGoal, userId).catch((error) => {
@@ -121,17 +183,23 @@ export const saveGoal = (
 export const getUserGoals = async (userId) => {
   if (!userId) return [];
   const snapshot = await getDocs(getGoalsCollection(userId));
-  return snapshot.docs.map((docSnap) => normalizeGoal({ id: docSnap.id, ...docSnap.data() }));
+  return snapshot.docs.map((docSnap) =>
+    normalizeGoal({ id: docSnap.id, ...docSnap.data() }),
+  );
 };
 
 export const syncGoalsFromFirestore = async (userId) => {
   if (!userId) return [];
 
-  const localGoals = getStoredGoals();
+  setGoalsStorageUser(userId);
+
+  const localGoals = getStoredGoals(userId);
   const dbGoals = await getUserGoals(userId);
 
   if (dbGoals.length === 0 && localGoals.length > 0) {
-    await Promise.all(localGoals.map((goal) => saveGoalToFirestore(goal, userId)));
+    await Promise.all(
+      localGoals.map((goal) => saveGoalToFirestore(goal, userId)),
+    );
     return localGoals;
   }
 
@@ -140,25 +208,48 @@ export const syncGoalsFromFirestore = async (userId) => {
   const mergedGoals = [...dbGoals, ...localOnlyGoals];
 
   if (localOnlyGoals.length > 0) {
-    await Promise.all(localOnlyGoals.map((goal) => saveGoalToFirestore(goal, userId)));
+    await Promise.all(
+      localOnlyGoals.map((goal) => saveGoalToFirestore(goal, userId)),
+    );
   }
 
-  localStorage.setItem(GOALS_STORAGE_KEY, JSON.stringify(mergedGoals));
+  setStoredGoals(mergedGoals, userId);
+  emitGoalsUpdated();
   return mergedGoals;
 };
 
 export const updateStoredGoal = async (updatedGoal, userId) => {
-  const goals = getStoredGoals();
+  setGoalsStorageUser(userId);
+  const goals = getStoredGoals(userId);
   const revisedGoals = goals.map((goal) =>
     goal.id === updatedGoal.id ? { ...goal, ...updatedGoal } : goal,
   );
-  localStorage.setItem(GOALS_STORAGE_KEY, JSON.stringify(revisedGoals));
+  setStoredGoals(revisedGoals, userId);
+  emitGoalsUpdated();
 
   if (userId) {
     try {
       await updateGoalInFirestore(updatedGoal, userId);
     } catch (error) {
       console.error("Unable to update goal in Firestore:", error);
+    }
+  }
+
+  return revisedGoals;
+};
+
+export const deleteStoredGoal = async (goalId, userId) => {
+  setGoalsStorageUser(userId);
+  const goals = getStoredGoals(userId);
+  const revisedGoals = goals.filter((goal) => goal.id !== goalId);
+  setStoredGoals(revisedGoals, userId);
+  emitGoalsUpdated();
+
+  if (userId) {
+    try {
+      await deleteGoalFromFirestore(goalId, userId);
+    } catch (error) {
+      console.error("Unable to delete goal in Firestore:", error);
     }
   }
 

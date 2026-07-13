@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { clearStoredGoals } from "../utils/goalsStorage";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const SignupInfo = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +14,13 @@ const SignupInfo = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { signup } = useAuth();
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1200,
+      once: true,
+    });
+  }, []);
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -48,12 +57,15 @@ const SignupInfo = () => {
     <div className="flex min-h-screen bg-(--surface-muted) text-(--text-primary)">
       {/* Left Section */}
       <div className="relative flex w-3/5 flex-col items-center justify-center overflow-hidden bg-slate-900 px-12">
-        <div className="absolute inset-0 bg-slate-900/90" />
-        <h1 className="relative text-6xl font-bold text-emerald-400">
+        <div className="absolute inset-0 bg-black" />
+        <h1
+          data-aos="zoom-in"
+          className="relative text-6xl font-bold text-emerald-400"
+        >
           Smart Save
         </h1>
 
-        <p className="relative mt-4 text-lg text-gray-100">
+        <p data-aos="fade-up" className="relative mt-4 text-lg text-gray-100">
           Save with purpose and focus on your goals.
         </p>
       </div>
@@ -61,7 +73,9 @@ const SignupInfo = () => {
       {/* Right Section */}
       <div className="flex w-2/5 items-center justify-center bg-(--surface) px-12">
         <div className="w-full max-w-lg">
-          <h1 className="text-4xl font-bold text-(--text-primary)">Create Account</h1>
+          <h1 className="text-4xl font-bold text-(--text-primary)">
+            Create Account
+          </h1>
 
           <p className="mb-6 mt-2 text-(--text-muted)">
             Start your Smart Save journey today
@@ -69,7 +83,9 @@ const SignupInfo = () => {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="mb-2 block text-(--text-primary)">Full Name</label>
+              <label className="mb-2 block text-(--text-primary)">
+                Full Name
+              </label>
 
               <div className="relative">
                 <FiUser className="absolute left-5 top-1/2 -translate-y-1/2 text-xl text-(--text-muted)" />
@@ -85,7 +101,9 @@ const SignupInfo = () => {
             </div>
 
             <div>
-              <label className="mb-2 block text-(--text-primary)">Email Address</label>
+              <label className="mb-2 block text-(--text-primary)">
+                Email Address
+              </label>
 
               <div className="relative">
                 <FiMail className="absolute left-5 top-1/2 -translate-y-1/2 text-xl text-(--text-muted)" />
@@ -101,7 +119,9 @@ const SignupInfo = () => {
             </div>
 
             <div>
-              <label className="mb-2 block text-(--text-primary)">Password</label>
+              <label className="mb-2 block text-(--text-primary)">
+                Password
+              </label>
 
               <div className="relative">
                 <FiLock className="absolute left-5 top-1/2 -translate-y-1/2 text-xl text-(--text-muted)" />

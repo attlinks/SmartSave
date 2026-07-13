@@ -7,8 +7,11 @@ const RequireAuth = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen grid place-items-center bg-slate-50 text-slate-700">
-        Loading authentication...
+      <div className="min-h-screen grid place-items-center bg-(--surface-muted)">
+        <div className="flex items-center gap-3 text-(--text-muted)">
+          <span className="h-5 w-5 animate-spin rounded-full border-2 border-(--text-muted) border-t-transparent" />
+          <span>Signing you in...</span>
+        </div>
       </div>
     );
   }

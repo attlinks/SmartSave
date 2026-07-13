@@ -1,7 +1,17 @@
 import { FiArrowRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const SmartSaveLogo = ({ className = "h-10 w-40" }) => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1200,
+      once: true,
+    });
+  }, []);
+
   return (
     <svg
       className={className}
@@ -68,7 +78,10 @@ const Smartinfo = () => {
             </h1>
           </div>
 
-          <div className="mx-auto flex w-full max-w-md flex-1 items-center justify-center py-10">
+          <div
+            data-aos="zoom-in"
+            className="mx-auto flex w-full max-w-md flex-1 items-center justify-center py-10"
+          >
             <div className="relative aspect-square w-full max-w-[320px]">
               <div className="absolute inset-6 rounded-full border border-emerald-300/20" />
               <div className="absolute inset-12 rounded-full border border-white/10" />
@@ -93,10 +106,14 @@ const Smartinfo = () => {
 
             <div className="grid gap-7 lg:grid-cols-[1fr_auto] lg:items-end">
               <div>
-                <p className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-emerald-600">
+                <p
+                  data-aos="fade-left"
+                  className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-emerald-600"
+                >
                   Smart saving
                 </p>
                 <h2
+                  data-aos="fade-left"
                   className="max-w-none tracking-normal lg:whitespace-nowrap"
                   style={{
                     color: "oklch(0.279 0.041 260.031)",
@@ -107,7 +124,8 @@ const Smartinfo = () => {
                     lineHeight: "35.75px",
                   }}
                 >
-                  Save With Purpose, Achieve With <br />Confidence.
+                  Save With Purpose, Achieve With <br />
+                  Confidence.
                 </h2>
               </div>
 
@@ -117,6 +135,7 @@ const Smartinfo = () => {
             </div>
 
             <p
+              data-aos="fade-up"
               className="mt-8 max-w-xl"
               style={{
                 color: "oklch(0.554 0.046 257.417)",

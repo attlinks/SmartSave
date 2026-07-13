@@ -9,7 +9,7 @@ const ThemeToggle = ({ className = "" }) => {
     <button
       type="button"
       onClick={toggleTheme}
-      className={`inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text-primary)] shadow-sm transition hover:opacity-80 ${className}`.trim()}
+      className={`inline-flex h-11 w-11 items-center justify-center rounded-full border border-(--border) bg-(--surface) text-(--text-primary) shadow-sm transition hover:opacity-80 ${className}`.trim()}
       aria-label={isDarkTheme ? "Switch to light mode" : "Switch to dark mode"}
       title={isDarkTheme ? "Switch to light mode" : "Switch to dark mode"}
     >

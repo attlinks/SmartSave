@@ -7,7 +7,10 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase";
-import { syncGoalsFromFirestore } from "../utils/goalsStorage";
+import {
+  setGoalsStorageUser,
+  syncGoalsFromFirestore,
+} from "../utils/goalsStorage";
 
 const AuthContext = createContext(null);
 
@@ -17,6 +20,8 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setGoalsStorageUser(currentUser?.uid);
+
       if (currentUser) {
         try {
           await syncGoalsFromFirestore(currentUser.uid);
@@ -49,7 +54,10 @@ export const AuthProvider = ({ children }) => {
     return userCredential;
   };
 
-  const logout = () => firebaseSignOut(auth);
+  const logout = async () => {
+    await firebaseSignOut(auth);
+    setGoalsStorageUser();
+  };
 
   const updateUserProfile = async (data) => {
     if (!auth.currentUser) throw new Error("No authenticated user");
@@ -62,11 +70,7 @@ export const AuthProvider = ({ children }) => {
     [user, loading],
   );
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {
