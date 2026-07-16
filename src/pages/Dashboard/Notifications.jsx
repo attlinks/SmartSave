@@ -12,98 +12,99 @@ const Notifications = () => {
     setSettings((current) => ({ ...current, [key]: !current[key] }));
   };
 
+  const cards = [
+    {
+      key: "email",
+      label: "Email alerts",
+      icon: FiMail,
+      tone: "bg-sky-500/10 text-sky-700 dark:text-sky-300",
+    },
+    {
+      key: "push",
+      label: "Push notifications",
+      icon: FiBell,
+      tone: "bg-violet-500/10 text-violet-700 dark:text-violet-300",
+    },
+    {
+      key: "reminders",
+      label: "Reminder alerts",
+      icon: FiPhoneCall,
+      tone: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+    },
+  ];
+
   return (
-    <section className="min-h-screen bg-(--surface-muted) p-4 text-(--text-primary) md:p-6">
-      <div className="mx-auto max-w-4xl space-y-6">
-        <div className="rounded-3xl border border-(--border) bg-(--surface) p-6 shadow-sm">
-          <h1 className="text-3xl font-bold text-(--text-primary)">
-            Notifications
-          </h1>
-          <p className="mt-2 text-sm text-(--text-muted)">
-            Control which notifications you receive and how you receive them.
-          </p>
-        </div>
+    <section className="mx-auto w-full max-w-3xl">
+      <div className="mb-4">
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">
+          Notifications
+        </h1>
+        <p className="mt-0.5 text-sm text-muted-foreground">
+          Choose what you hear about and how you hear it
+        </p>
+      </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
-          <article className="rounded-3xl border border-(--border) bg-(--surface) p-5 shadow-sm">
-            <div className="flex items-center gap-3">
-              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
-                <FiMail className="text-xl" />
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-(--text-muted)">
-                  Email alerts
-                </p>
-                <p className="mt-2 text-lg font-semibold text-(--text-primary)">
-                  {settings.email ? "Enabled" : "Disabled"}
-                </p>
-              </div>
-            </div>
-          </article>
-
-          <article className="rounded-3xl border border-(--border) bg-(--surface) p-5 shadow-sm">
-            <div className="flex items-center gap-3">
-              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-violet-50 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300">
-                <FiBell className="text-xl" />
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-(--text-muted)">
-                  Push notifications
-                </p>
-                <p className="mt-2 text-lg font-semibold text-(--text-primary)">
-                  {settings.push ? "Enabled" : "Disabled"}
-                </p>
-              </div>
-            </div>
-          </article>
-
-          <article className="rounded-3xl border border-(--border) bg-(--surface) p-5 shadow-sm">
-            <div className="flex items-center gap-3">
-              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
-                <FiPhoneCall className="text-xl" />
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-(--text-muted)">
-                  Reminder alerts
-                </p>
-                <p className="mt-2 text-lg font-semibold text-(--text-primary)">
-                  {settings.reminders ? "Enabled" : "Disabled"}
-                </p>
-              </div>
-            </div>
-          </article>
-        </div>
-
-        <div className="rounded-3xl border border-(--border) bg-(--surface) p-6 shadow-sm">
-          <h2 className="text-xl font-bold text-(--text-primary)">
-            Notification preferences
-          </h2>
-          <div className="mt-5 space-y-4">
-            {[
-              { key: "email", label: "Email notifications" },
-              { key: "push", label: "Push notifications" },
-              { key: "reminders", label: "Savings reminders" },
-            ].map((item) => (
-              <button
-                key={item.key}
-                type="button"
-                onClick={() => toggle(item.key)}
-                className="flex w-full items-center justify-between rounded-2xl border border-(--border) bg-(--surface-muted) px-5 py-4 text-left transition hover:bg-(--surface)"
-              >
+      <div className="mb-4 grid gap-3 sm:grid-cols-3">
+        {cards.map((item) => {
+          const Icon = item.icon;
+          return (
+            <article
+              key={item.key}
+              className="rounded-xl border border-border bg-card p-3.5 shadow-sm"
+            >
+              <div className="flex items-center gap-3">
+                <span
+                  className={`grid size-9 place-items-center rounded-lg ${item.tone}`}
+                >
+                  <Icon className="text-base" />
+                </span>
                 <div>
-                  <p className="font-semibold text-(--text-primary)">
-                    {item.label}
-                  </p>
-                  <p className="mt-1 text-sm text-(--text-muted)">
-                    {settings[item.key] ? "On" : "Off"}
+                  <p className="text-xs text-muted-foreground">{item.label}</p>
+                  <p className="mt-0.5 text-sm font-semibold text-card-foreground">
+                    {settings[item.key] ? "Enabled" : "Disabled"}
                   </p>
                 </div>
-                <span className="rounded-full bg-(--surface) px-4 py-2 text-sm font-semibold text-(--text-primary) shadow-sm">
+              </div>
+            </article>
+          );
+        })}
+      </div>
+
+      <div className="rounded-xl border border-border bg-card p-3.5 shadow-sm">
+        <h2 className="text-sm font-semibold text-card-foreground">
+          Preferences
+        </h2>
+        <div className="mt-3 flex flex-col gap-2">
+          {[
+            { key: "email", label: "Email notifications" },
+            { key: "push", label: "Push notifications" },
+            { key: "reminders", label: "Savings reminders" },
+          ].map((item) => (
+            <button
+              key={item.key}
+              type="button"
+              onClick={() => toggle(item.key)}
+              className="flex w-full items-center justify-between rounded-lg border border-border bg-muted/30 px-3 py-2.5 text-left transition-colors hover:bg-muted/60"
+            >
+              <div>
+                <p className="text-sm font-medium text-foreground">
+                  {item.label}
+                </p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
                   {settings[item.key] ? "On" : "Off"}
-                </span>
-              </button>
-            ))}
-          </div>
+                </p>
+              </div>
+              <span
+                className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+                  settings[item.key]
+                    ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
+                    : "bg-muted text-muted-foreground"
+                }`}
+              >
+                {settings[item.key] ? "On" : "Off"}
+              </span>
+            </button>
+          ))}
         </div>
       </div>
     </section>

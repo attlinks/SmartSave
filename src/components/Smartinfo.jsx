@@ -1,177 +1,177 @@
-import { FiArrowRight } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import {
+  ArrowRightIcon,
+  ChartColumnIncreasingIcon,
+  CrosshairIcon,
+  TargetIcon,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/logo";
 
-const SmartSaveLogo = ({ className = "h-10 w-40" }) => {
-  useEffect(() => {
-    AOS.init({
-      duration: 1200,
-      once: true,
-    });
-  }, []);
-
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 320 80"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-label="Smart Save"
-      role="img"
-    >
-      <circle cx="40" cy="40" r="28" fill="#00D492" />
-
-      <path
-        d="M28 46L40 34L49 43L58 24"
-        stroke="white"
-        strokeWidth="5"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-
-      <path
-        d="M52 24H60V32"
-        stroke="white"
-        strokeWidth="5"
-        fill="none"
-        strokeLinecap="round"
-      />
-
-      <text
-        x="85"
-        y="38"
-        fontSize="18"
-        fontFamily="Inter, Arial"
-        fontWeight="500"
-        fill="#64748B"
-      >
-        Smart
-      </text>
-
-      <text
-        x="85"
-        y="58"
-        fontSize="30"
-        fontFamily="Inter, Arial"
-        fontWeight="800"
-        fill="#0F172A"
-      >
-        Save
-      </text>
-    </svg>
-  );
-};
+const principles = [
+  {
+    title: "One goal at a time",
+    body: "Pick a target, set the amount, and keep every session pointed at that outcome.",
+    icon: TargetIcon,
+  },
+  {
+    title: "Quiet progress",
+    body: "See how far you have come without dashboards drowning out the next step.",
+    icon: ChartColumnIncreasingIcon,
+  },
+  {
+    title: "Stay focused",
+    body: "Fewer distractions, clearer habits, and a calmer path from intention to done.",
+    icon: CrosshairIcon,
+  },
+];
 
 const Smartinfo = () => {
   return (
-    <main className="min-h-screen bg-(--surface-muted) text-(--text-primary) transition-colors duration-300">
-      <section className="grid min-h-screen overflow-hidden lg:grid-cols-[37%_63%]">
-        <aside className="relative flex min-h-[46vh] flex-col justify-between bg-black px-6 py-8 text-white sm:px-10 lg:min-h-screen lg:px-14 lg:py-12">
-          <div className="flex items-center gap-4">
-            <div className="grid h-16 w-40 place-items-center rounded-2xl bg-white shadow-[0_0_40px_rgba(52,211,153,0.35)]">
-              <SmartSaveLogo className="h-10 w-40" />
-            </div>
-            <h1 className="text-3xl font-black tracking-normal sm:text-4xl">
-              Goals
-            </h1>
-          </div>
-
-          <div
-            data-aos="zoom-in"
-            className="mx-auto flex w-full max-w-md flex-1 items-center justify-center py-10"
+    <main className="min-h-[100dvh] bg-background text-foreground">
+      <header className="absolute inset-x-0 top-0 z-20">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 sm:px-8">
+          <Link
+            to="/"
+            className="inline-flex rounded-lg outline-none transition-opacity duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] hover:opacity-80 focus-visible:ring-2 focus-visible:ring-emerald-400/60"
+            aria-label="Smart Save home"
           >
-            <div className="relative aspect-square w-full max-w-[320px]">
-              <div className="absolute inset-6 rounded-full border border-emerald-300/20" />
-              <div className="absolute inset-12 rounded-full border border-white/10" />
-              <div className="absolute left-1/2 top-1/2 grid h-32 w-52 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-3xl bg-white shadow-[0_0_70px_rgba(52,211,153,0.38)]">
-                <SmartSaveLogo className="h-14 w-48" />
-              </div>
-              <div className="absolute right-4 top-10 rounded-full bg-white px-4 py-2 text-sm font-bold text-black">
-                1 Goal
-              </div>
-              <div className="absolute bottom-9 left-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-medium backdrop-blur">
-                Focus mode
-              </div>
-            </div>
-          </div>
-        </aside>
+            <Logo inverted className="[&_svg]:size-8" />
+          </Link>
 
-        <section className="flex items-center bg-(--surface) px-6 py-12 text-(--text-primary) sm:px-10 lg:px-20">
-          <div className="mx-auto ml-20 w-full max-w-2xl">
-            <div className="mb-10 inline-grid h-14 w-40 place-items-center rounded-2xl bg-emerald-50">
-              <SmartSaveLogo className="h-10 w-36" />
-            </div>
-
-            <div className="grid gap-7 lg:grid-cols-[1fr_auto] lg:items-end">
-              <div>
-                <p
-                  data-aos="fade-left"
-                  className="mb-4 text-sm font-bold uppercase tracking-[0.28em] text-emerald-600"
-                >
-                  Smart saving
-                </p>
-                <h2
-                  data-aos="fade-left"
-                  className="max-w-none tracking-normal lg:whitespace-nowrap"
-                  style={{
-                    color: "oklch(0.279 0.041 260.031)",
-                    fontFamily:
-                      'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-                    fontSize: "28px",
-                    fontWeight: 700,
-                    lineHeight: "35.75px",
-                  }}
-                >
-                  Save With Purpose, Achieve With <br />
-                  Confidence.
-                </h2>
-              </div>
-
-              <div className="hidden h-28 w-28 place-items-center rounded-full border border-(--border) lg:grid">
-                <span className="h-16 w-16 rounded-full bg-emerald-400 shadow-[0_18px_45px_rgba(16,185,129,0.3)]" />
-              </div>
-            </div>
-
-            <p
-              data-aos="fade-up"
-              className="mt-8 max-w-xl"
-              style={{
-                color: "oklch(0.554 0.046 257.417)",
-                fontFamily:
-                  'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
-                fontSize: "13.5px",
-                fontWeight: 400,
-                lineHeight: "21.9375px",
-              }}
+          <div className="flex items-center gap-2">
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="text-white hover:bg-white/10 hover:text-white active:scale-[0.97] motion-safe:transition-transform motion-safe:duration-150"
             >
-              Turn your financial goals into achievable milestones. Smart Save
-              helps you focus on a single savings target at a time, giving you a
-              clear path forward, better control of your money, and the
-              confidence to reach your goals faster.
+              <Link to="/login">Sign in</Link>
+            </Button>
+            <Button
+              asChild
+              size="sm"
+              className="bg-emerald-400 text-zinc-950 hover:bg-emerald-300 active:scale-[0.97] motion-safe:transition-[transform,background-color] motion-safe:duration-150"
+            >
+              <Link to="/signup">Get started</Link>
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      <section className="relative flex min-h-[100dvh] items-end overflow-hidden">
+        <img
+          src="/landing-hero.jpg"
+          alt=""
+          className="absolute inset-0 size-full object-cover motion-safe:animate-landing-image"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-zinc-950/35" />
+
+        <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pb-16 pt-28 sm:px-8 sm:pb-20 lg:pb-24">
+          <div className="max-w-2xl motion-safe:animate-landing-copy">
+            <p className="mb-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+              Smart Save
+            </p>
+            <h1 className="max-w-[14ch] text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl">
+              Save with purpose. Reach goals with calm focus.
+            </h1>
+            <p className="mt-5 max-w-[42ch] text-base leading-relaxed text-zinc-300 sm:text-lg">
+              Turn one financial goal into steady progress you can actually
+              finish.
             </p>
 
-            <div className="mt-12 flex flex-col gap-5 sm:flex-row sm:items-center">
-              <button
-                type="button"
-                className="group flex h-16 w-1/3 items-center justify-center rounded-2xl bg-emerald-400 px-8 text-lg font-bold text-black shadow-[0_16px_45px_rgba(52,211,153,0.28)] transition hover:bg-emerald-300 sm:max-w-sm"
-                aria-label="Continue"
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Button
+                asChild
+                size="lg"
+                className="h-11 bg-emerald-400 px-5 text-zinc-950 hover:bg-emerald-300 active:scale-[0.97] motion-safe:transition-[transform,background-color] motion-safe:duration-150"
               >
-                <FiArrowRight className="text-2xl transition group-hover:translate-x-1" />
-              </button>
-              <Link to="/signup">
-                <button
-                  type="button"
-                  className="h-16 rounded-2xl px-6 text-lg font-semibold text-(--text-muted) transition hover:bg-(--surface-muted) hover:text-(--text-primary)"
-                >
-                  Next
-                </button>
-              </Link>
+                <Link to="/signup">
+                  Start saving
+                  <ArrowRightIcon data-icon="inline-end" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="h-11 border-white/20 bg-white/5 px-5 text-white hover:bg-white/10 hover:text-white active:scale-[0.97] motion-safe:transition-[transform,background-color] motion-safe:duration-150"
+              >
+                <Link to="/login">I already have an account</Link>
+              </Button>
             </div>
           </div>
-        </section>
+        </div>
       </section>
+
+      <section className="border-t border-border bg-background">
+        <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:py-28">
+          <div className="max-w-md">
+            <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Built for people who want clarity, not clutter.
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+              Smart Save keeps the path short: choose a goal, track what you put
+              aside, and stay close to the finish line.
+            </p>
+          </div>
+
+          <ul className="grid gap-8 sm:grid-cols-1">
+            {principles.map((item) => {
+              const Icon = item.icon;
+              return (
+                <li
+                  key={item.title}
+                  className="grid gap-3 border-t border-border pt-6 first:border-t-0 first:pt-0 sm:grid-cols-[auto_1fr] sm:gap-5"
+                >
+                  <div className="flex size-10 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                    <Icon className="size-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold tracking-tight">
+                      {item.title}
+                    </h3>
+                    <p className="mt-1.5 max-w-[48ch] text-sm leading-relaxed text-muted-foreground">
+                      {item.body}
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+
+      <section className="border-t border-border bg-zinc-950 text-zinc-50">
+        <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-16 sm:px-8 sm:py-20 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-xl">
+            <p className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+              Ready when you are.
+            </p>
+            <p className="mt-3 max-w-[40ch] text-base leading-relaxed text-zinc-400">
+              Create an account in a minute and put your next goal on a clear
+              track.
+            </p>
+          </div>
+          <Button
+            asChild
+            size="lg"
+            className="h-11 w-fit bg-emerald-400 px-5 text-zinc-950 hover:bg-emerald-300 active:scale-[0.97] motion-safe:transition-[transform,background-color] motion-safe:duration-150"
+          >
+            <Link to="/signup">
+              Create account
+              <ArrowRightIcon data-icon="inline-end" />
+            </Link>
+          </Button>
+        </div>
+      </section>
+
+      <footer className="border-t border-border bg-background">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-8">
+          <Logo className="[&_svg]:size-7 [&_span]:text-sm" />
+          <p>Save with purpose. Finish what you start.</p>
+        </div>
+      </footer>
     </main>
   );
 };

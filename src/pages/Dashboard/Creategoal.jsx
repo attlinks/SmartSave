@@ -1,60 +1,20 @@
-import { FiArrowLeft, FiCalendar, FiDollarSign } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
-import { saveGoal } from "../../utils/goalsStorage";
-
-const SmartSaveLogo = ({ className = "h-10 w-40" }) => {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 320 80"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-label="Smart Save"
-      role="img"
-    >
-      <circle cx="40" cy="40" r="28" fill="#00D492" />
-
-      <path
-        d="M28 46L40 34L49 43L58 24"
-        stroke="white"
-        strokeWidth="5"
-        fill="none"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-
-      <path
-        d="M52 24H60V32"
-        stroke="white"
-        strokeWidth="5"
-        fill="none"
-        strokeLinecap="round"
-      />
-
-      <text
-        x="85"
-        y="38"
-        fontSize="18"
-        fontFamily="Inter, Arial"
-        fontWeight="500"
-        fill="#64748B"
-      >
-        Smart
-      </text>
-
-      <text
-        x="85"
-        y="58"
-        fontSize="30"
-        fontFamily="Inter, Arial"
-        fontWeight="800"
-        fill="#0F172A"
-      >
-        Save
-      </text>
-    </svg>
-  );
-};
+import { ArrowLeftIcon, CalendarIcon, DollarSignIcon } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import { saveGoal } from "@/utils/goalsStorage";
+import { Button } from "@/components/ui/button";
+import {
+  Field,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 const Creategoal = () => {
   const navigate = useNavigate();
@@ -78,53 +38,51 @@ const Creategoal = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 text-slate-950 md:p-6">
-      <div className="mx-auto max-w-3xl">
+    <div className="mx-auto w-full max-w-2xl">
+      <Button
+        asChild
+        variant="ghost"
+        size="sm"
+        className="mb-3 -ml-2 text-muted-foreground hover:text-foreground"
+      >
         <Link to="/dashboard">
-          <FiArrowLeft />
-          Back to dashboard
+          <ArrowLeftIcon data-icon="inline-start" />
+          Back
         </Link>
+      </Button>
 
-        <section className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm md:p-7">
-          <div className="mb-7">
-            <div className="mb-4 inline-grid h-14 w-40 place-items-center rounded-2xl bg-[#ecfdf5] dark:bg-[#143227]">
-              <SmartSaveLogo className="h-10 w-36" />
-            </div>
-            <h1 className="text-2xl font-black text-slate-950">Create Goal</h1>
-            <p className="mt-2 text-sm font-medium text-slate-500">
-              Add your goal details, target amount, and deadline.
-            </p>
-          </div>
+      <section className="rounded-xl border border-border bg-card p-4 shadow-sm sm:p-5">
+        <div className="mb-5">
+          <h1 className="text-xl font-semibold tracking-tight text-card-foreground">
+            Create goal
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Set a name, target amount, and deadline.
+          </p>
+        </div>
 
-          <form className="space-y-5" onSubmit={handleSubmit}>
-            <div>
-              <label
-                htmlFor="goalName"
-                className="mb-2 block text-sm font-bold text-slate-700"
-              >
-                Goal name
-              </label>
-              <input
+        <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor="goalName">Goal name</FieldLabel>
+              <Input
                 id="goalName"
                 name="goalName"
                 type="text"
                 placeholder="Example: Buy a laptop"
                 required
-                className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                className="h-9"
               />
-            </div>
+            </Field>
 
-            <div className="grid gap-5 md:grid-cols-2">
-              <div>
-                <label
-                  htmlFor="targetAmount"
-                  className="mb-2 block text-sm font-bold text-slate-700"
-                >
-                  Target amount
-                </label>
-                <div className="relative">
-                  <FiDollarSign className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Field>
+                <FieldLabel htmlFor="targetAmount">Target amount</FieldLabel>
+                <InputGroup className="h-9">
+                  <InputGroupAddon>
+                    <DollarSignIcon />
+                  </InputGroupAddon>
+                  <InputGroupInput
                     id="targetAmount"
                     name="targetAmount"
                     type="number"
@@ -132,64 +90,52 @@ const Creategoal = () => {
                     step="0.01"
                     placeholder="0.00"
                     required
-                    className="w-full rounded-lg border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm font-medium outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
                   />
-                </div>
-              </div>
+                </InputGroup>
+              </Field>
 
-              <div>
-                <label
-                  htmlFor="deadline"
-                  className="mb-2 block text-sm font-bold text-slate-700"
-                >
-                  Deadline
-                </label>
-                <div className="relative">
-                  <FiCalendar className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input
+              <Field>
+                <FieldLabel htmlFor="deadline">Deadline</FieldLabel>
+                <InputGroup className="h-9">
+                  <InputGroupAddon>
+                    <CalendarIcon />
+                  </InputGroupAddon>
+                  <InputGroupInput
                     id="deadline"
                     name="deadline"
                     type="date"
                     required
-                    className="w-full rounded-lg border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm font-medium outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
                   />
-                </div>
-              </div>
+                </InputGroup>
+              </Field>
             </div>
 
-            <div>
-              <label
-                htmlFor="note"
-                className="mb-2 block text-sm font-bold text-slate-700"
-              >
-                Note
-              </label>
-              <textarea
+            <Field>
+              <FieldLabel htmlFor="note">Note</FieldLabel>
+              <Textarea
                 id="note"
                 name="note"
-                rows="4"
-                placeholder="Write a short note about this goal"
-                className="w-full resize-none rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                rows={3}
+                placeholder="Optional note about this goal"
+                className="min-h-20 resize-none"
               />
-            </div>
+            </Field>
+          </FieldGroup>
 
-            <div className="flex flex-col gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:justify-end">
-              <Link
-                to="/dashboard"
-                className="rounded-lg border border-slate-200 px-5 py-3 text-center text-sm font-bold text-slate-600 transition hover:bg-slate-50"
-              >
-                Cancel
-              </Link>
-              <button
-                type="submit"
-                className="rounded-lg bg-emerald-600 px-5 py-3 text-sm font-bold text-white shadow-sm shadow-emerald-100 transition hover:bg-emerald-700"
-              >
-                Create Goal
-              </button>
-            </div>
-          </form>
-        </section>
-      </div>
+          <div className="flex flex-col-reverse gap-2 border-t border-border pt-4 sm:flex-row sm:justify-end">
+            <Button asChild variant="outline" size="sm">
+              <Link to="/dashboard">Cancel</Link>
+            </Button>
+            <Button
+              type="submit"
+              size="sm"
+              className="bg-emerald-500 text-zinc-950 hover:bg-emerald-400 dark:bg-emerald-400 dark:hover:bg-emerald-300"
+            >
+              Create goal
+            </Button>
+          </div>
+        </form>
+      </section>
     </div>
   );
 };

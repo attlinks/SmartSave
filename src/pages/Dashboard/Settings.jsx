@@ -1,10 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { FiShield, FiMoon, FiUser, FiZap } from "react-icons/fi";
+import { FiMoon, FiShield, FiZap } from "react-icons/fi";
+import { useTheme } from "@/context/ThemeContext";
 
 const Settings = () => {
+  const { theme, toggleTheme } = useTheme();
   const [settings, setSettings] = useState({
-    darkMode: false,
     autoSave: true,
     secureLogin: true,
   });
@@ -29,99 +30,114 @@ const Settings = () => {
     }
   }, [location]);
 
+  const preferenceRows = [
+    {
+      key: "darkMode",
+      label: "Dark theme",
+      description: "Switch between light and dark mode.",
+      enabled: theme === "dark",
+      onToggle: toggleTheme,
+    },
+    {
+      key: "autoSave",
+      label: "Auto-save goals",
+      description: "Keep goal updates saved without extra steps.",
+      enabled: settings.autoSave,
+      onToggle: () => toggle("autoSave"),
+    },
+    {
+      key: "secureLogin",
+      label: "Enhanced login",
+      description: "Add extra protection to your account.",
+      enabled: settings.secureLogin,
+      onToggle: () => toggle("secureLogin"),
+    },
+  ];
+
   return (
-    <section className="min-h-screen bg-(--surface-muted) p-4 text-(--text-primary) md:p-6">
-      <div className="mx-auto max-w-4xl space-y-6">
-        <div className="rounded-3xl border border-(--border) bg-(--surface) p-6 shadow-sm">
-          <h1 className="text-3xl font-bold text-(--text-primary)">Settings</h1>
-          <p className="mt-2 text-sm text-(--text-muted)">
-            Update your preferences, security options, and app behavior here.
-          </p>
-        </div>
+    <section className="mx-auto w-full max-w-3xl">
+      <div className="mb-4">
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">
+          Settings
+        </h1>
+        <p className="mt-0.5 text-sm text-muted-foreground">
+          Preferences, security, and app behavior
+        </p>
+      </div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
-          {[
-            { key: "darkMode", label: "Dark mode", icon: FiMoon },
-            { key: "autoSave", label: "Auto save goals", icon: FiZap },
-            { key: "secureLogin", label: "Secure login", icon: FiShield },
-          ].map((item) => {
-            const Icon = item.icon;
-            return (
-              <article
-                key={item.key}
-                ref={item.key === "secureLogin" ? secureRef : undefined}
-                className={`rounded-3xl border border-(--border) bg-(--surface) p-5 shadow-sm ${item.key === "secureLogin" && highlightSecure ? "ring-2 ring-emerald-300" : ""}`}
-              >
-                <div className="flex items-center gap-3">
-                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-(--surface-muted) text-(--text-primary)">
-                    <Icon className="text-xl" />
-                  </span>
-                  <div>
-                    <p className="text-sm font-semibold text-(--text-muted)">
-                      {item.label}
-                    </p>
-                    <p className="mt-2 text-lg font-semibold text-(--text-primary)">
-                      {settings[item.key] ? "Enabled" : "Disabled"}
-                    </p>
-                  </div>
+      <div className="mb-4 grid gap-3 sm:grid-cols-3">
+        {[
+          { key: "darkMode", label: "Dark mode", icon: FiMoon, enabled: theme === "dark" },
+          { key: "autoSave", label: "Auto save", icon: FiZap, enabled: settings.autoSave },
+          {
+            key: "secureLogin",
+            label: "Secure login",
+            icon: FiShield,
+            enabled: settings.secureLogin,
+          },
+        ].map((item) => {
+          const Icon = item.icon;
+          return (
+            <article
+              key={item.key}
+              ref={item.key === "secureLogin" ? secureRef : undefined}
+              className={`rounded-xl border border-border bg-card p-3.5 shadow-sm ${
+                item.key === "secureLogin" && highlightSecure
+                  ? "ring-2 ring-emerald-500/40"
+                  : ""
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <span className="grid size-9 place-items-center rounded-lg bg-muted text-foreground">
+                  <Icon className="text-base" />
+                </span>
+                <div>
+                  <p className="text-xs text-muted-foreground">{item.label}</p>
+                  <p className="mt-0.5 text-sm font-semibold text-card-foreground">
+                    {item.enabled ? "Enabled" : "Disabled"}
+                  </p>
                 </div>
-              </article>
-            );
-          })}
-        </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
 
-        <div className="rounded-3xl border border-(--border) bg-(--surface) p-6 shadow-sm">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <h2 className="text-xl font-bold text-(--text-primary)">
-                Preferences
-              </h2>
-              <p className="mt-2 text-sm text-(--text-muted)">
-                Quickly toggle your most-used options.
-              </p>
-            </div>
-          </div>
+      <div className="rounded-xl border border-border bg-card p-3.5 shadow-sm">
+        <h2 className="text-sm font-semibold text-card-foreground">
+          Preferences
+        </h2>
+        <p className="mt-0.5 text-xs text-muted-foreground">
+          Toggle your most-used options
+        </p>
 
-          <div className="mt-5 space-y-4">
-            {[
-              {
-                key: "darkMode",
-                label: "Use dark theme",
-                description: "Switch between light and dark mode.",
-              },
-              {
-                key: "autoSave",
-                label: "Save progress automatically",
-                description: "Keep goal updates saved without manual steps.",
-              },
-              {
-                key: "secureLogin",
-                label: "Require enhanced login",
-                description: "Add extra protection to your account.",
-              },
-            ].map((item) => (
-              <button
-                key={item.key}
-                type="button"
-                onClick={() => toggle(item.key)}
-                className="flex w-full flex-col gap-2 rounded-2xl border border-(--border) bg-(--surface-muted) px-5 py-4 text-left transition hover:bg-(--surface)"
+        <div className="mt-3 flex flex-col gap-2">
+          {preferenceRows.map((item) => (
+            <button
+              key={item.key}
+              type="button"
+              onClick={item.onToggle}
+              className="flex w-full items-center justify-between gap-4 rounded-lg border border-border bg-muted/30 px-3 py-2.5 text-left transition-colors hover:bg-muted/60"
+            >
+              <div>
+                <p className="text-sm font-medium text-foreground">
+                  {item.label}
+                </p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  {item.description}
+                </p>
+              </div>
+              <span
+                className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+                  item.enabled
+                    ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
+                    : "bg-muted text-muted-foreground"
+                }`}
               >
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <p className="font-semibold text-(--text-primary)">
-                      {item.label}
-                    </p>
-                    <p className="mt-1 text-sm text-(--text-muted)">
-                      {item.description}
-                    </p>
-                  </div>
-                  <span className="rounded-full bg-(--surface) px-4 py-2 text-sm font-semibold text-(--text-primary) shadow-sm">
-                    {settings[item.key] ? "On" : "Off"}
-                  </span>
-                </div>
-              </button>
-            ))}
-          </div>
+                {item.enabled ? "On" : "Off"}
+              </span>
+            </button>
+          ))}
         </div>
       </div>
     </section>

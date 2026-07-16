@@ -1,7 +1,10 @@
 import { useMemo, useState } from "react";
-import { FiUser, FiMail, FiSmile } from "react-icons/fi";
+import { FiMail, FiSmile, FiUser } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Field, FieldLabel } from "@/components/ui/field";
 
 const profileItems = [
   { label: "Name", icon: FiUser, key: "displayName" },
@@ -27,111 +30,115 @@ const Profiles = () => {
   );
 
   return (
-    <section className="min-h-screen bg-(--surface-muted) p-4 text-(--text-primary) md:p-6">
-      <div className="mx-auto max-w-4xl space-y-6">
-        <div className="rounded-3xl border border-(--border) bg-(--surface) p-6 shadow-sm">
-          <h1 className="text-3xl font-bold text-(--text-primary)">Profile</h1>
-          <p className="mt-2 text-sm text-(--text-muted)">
-            Manage your account details and view profile information.
-          </p>
-        </div>
+    <section className="mx-auto w-full max-w-3xl">
+      <div className="mb-4">
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">
+          Profile
+        </h1>
+        <p className="mt-0.5 text-sm text-muted-foreground">
+          Account details and profile information
+        </p>
+      </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
-          {profileData.map((item) => {
-            const Icon = item.icon;
-            return (
-              <article
-                key={item.label}
-                className="rounded-3xl border border-(--border) bg-(--surface) p-5 shadow-sm"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-50 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
-                    <Icon className="text-xl" />
-                  </span>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-                      {item.label}
-                    </p>
-                    <p className="mt-2 text-lg font-semibold text-(--text-primary)">
-                      {item.value}
-                    </p>
-                  </div>
+      <div className="mb-4 grid gap-3 sm:grid-cols-3">
+        {profileData.map((item) => {
+          const Icon = item.icon;
+          return (
+            <article
+              key={item.label}
+              className="rounded-xl border border-border bg-card p-3.5 shadow-sm"
+            >
+              <div className="flex items-center gap-3">
+                <span className="grid size-9 place-items-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                  <Icon className="text-base" />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs text-muted-foreground">{item.label}</p>
+                  <p className="mt-0.5 truncate text-sm font-semibold text-card-foreground">
+                    {item.value}
+                  </p>
                 </div>
-              </article>
-            );
-          })}
-        </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
 
-        {editing && (
-          <div className="rounded-3xl border border-(--border) bg-(--surface) p-6 shadow-sm">
-            <h2 className="text-lg font-bold text-(--text-primary)">
-              Edit Profile
-            </h2>
-            <div className="mt-4">
-              <label className="block text-sm text-(--text-muted)">Name</label>
-              <input
+      {editing ? (
+        <div className="mb-4 rounded-xl border border-border bg-card p-3.5 shadow-sm">
+          <h2 className="text-sm font-semibold text-card-foreground">
+            Edit profile
+          </h2>
+          <div className="mt-3 max-w-sm">
+            <Field>
+              <FieldLabel htmlFor="profile-name">Name</FieldLabel>
+              <Input
+                id="profile-name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="mt-1 w-full rounded-md border border-(--border) bg-(--surface-muted) px-3 py-2 text-(--text-primary)"
+                className="h-9"
               />
-              <div className="mt-4 flex gap-2">
-                <button
-                  type="button"
-                  onClick={async () => {
-                    try {
-                      await updateUserProfile({ displayName: name });
-                      setEditing(false);
-                    } catch (e) {
-                      console.error(e);
-                    }
-                  }}
-                  className="rounded-2xl bg-emerald-600 px-4 py-2 text-white"
-                >
-                  Save
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setEditing(false)}
-                  className="rounded-2xl border border-(--border) bg-(--surface) px-4 py-2 text-(--text-primary) hover:bg-(--surface-muted)"
-                >
-                  Cancel
-                </button>
-              </div>
+            </Field>
+            <div className="mt-3 flex gap-2">
+              <Button
+                type="button"
+                size="sm"
+                className="bg-emerald-500 text-zinc-950 hover:bg-emerald-400 dark:bg-emerald-400 dark:hover:bg-emerald-300"
+                onClick={async () => {
+                  try {
+                    await updateUserProfile({ displayName: name });
+                    setEditing(false);
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }}
+              >
+                Save
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant="outline"
+                onClick={() => setEditing(false)}
+              >
+                Cancel
+              </Button>
             </div>
           </div>
-        )}
+        </div>
+      ) : null}
 
-        <div className="rounded-3xl border border-(--border) bg-(--surface) p-6 shadow-sm">
-          <h2 className="text-xl font-bold text-(--text-primary)">
-            Quick profile actions
-          </h2>
-          <p className="mt-3 text-sm text-(--text-muted)">
-            Your profile page is ready. You can later add edit fields, change
-            your profile picture, or configure account preferences here.
-          </p>
-          <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <button
-              type="button"
-              className="rounded-2xl bg-emerald-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700"
-              onClick={() => {
-                setName(user?.displayName || "");
-                setEditing(true);
-              }}
-            >
-              Edit profile
-            </button>
-            <button
-              type="button"
-              className="rounded-2xl border border-(--border) bg-(--surface) px-4 py-3 text-sm font-semibold text-(--text-primary) transition hover:bg-(--surface-muted)"
-              onClick={() =>
-                navigate("/dashboard/settings", {
-                  state: { section: "security" },
-                })
-              }
-            >
-              View account security
-            </button>
-          </div>
+      <div className="rounded-xl border border-border bg-card p-3.5 shadow-sm">
+        <h2 className="text-sm font-semibold text-card-foreground">
+          Quick actions
+        </h2>
+        <p className="mt-0.5 text-xs text-muted-foreground">
+          Update your name or review account security.
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <Button
+            type="button"
+            size="sm"
+            className="bg-emerald-500 text-zinc-950 hover:bg-emerald-400 dark:bg-emerald-400 dark:hover:bg-emerald-300"
+            onClick={() => {
+              setName(user?.displayName || "");
+              setEditing(true);
+            }}
+          >
+            Edit profile
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant="outline"
+            onClick={() =>
+              navigate("/dashboard/settings", {
+                state: { section: "security" },
+              })
+            }
+          >
+            Account security
+          </Button>
         </div>
       </div>
     </section>
