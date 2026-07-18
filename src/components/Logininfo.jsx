@@ -1,29 +1,35 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useAuth } from "../context/AuthContext";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
+import AuthLayout from "@/components/AuthLayout";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
 
 const LoginInfo = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
-
-  useEffect(() => {
-    AOS.init({
-      duration: 1200,
-      once: true,
-    });
-  }, []);
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -41,102 +47,109 @@ const LoginInfo = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-(--surface-muted) text-(--text-primary)">
-      {/* Left Section */}
-      <div className="w-3/5 bg-black flex flex-col justify-center items-center">
-        <h1 data-aos="zoom-in" className="text-6xl font-bold text-emerald-400">
-          Smart Save
-        </h1>
+    <AuthLayout mode="login">
+      <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-3xl font-semibold tracking-tight text-foreground">
+            Welcome back
+          </h2>
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            Sign in to continue toward your goals.
+          </p>
+        </div>
 
-        <p data-aos="fade-up" className="text-gray-300 mt-4 text-lg">
-          Save With Purpose, Achieve With Confidence
-        </p>
-      </div>
-
-      {/* Right Section */}
-      <div className="w-2/5 bg-(--surface) flex items-center justify-center px-12">
-        <div className="w-full max-w-md">
-          <h1 className="text-4xl font-bold text-(--text-primary)">
-            Welcome Back
-          </h1>
-
-          <p className="text-(--text-muted) mt-2 mb-8">Sign in to continue</p>
-
-          <form onSubmit={handleLogin} className="space-y-5">
-            <div>
-              <label className="block mb-2 text-(--text-primary)">
-                Email Address
-              </label>
-
-              <input
+        <form onSubmit={handleLogin} className="flex flex-col gap-6">
+          <FieldGroup>
+            <Field data-invalid={Boolean(error) || undefined}>
+              <FieldLabel htmlFor="login-email">Email</FieldLabel>
+              <Input
+                id="login-email"
                 type="email"
-                placeholder="Enter your email address"
+                autoComplete="email"
+                placeholder="you@example.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full p-4 rounded-xl bg-(--surface-muted) text-(--text-primary) outline-none"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setError("");
+                }}
+                aria-invalid={Boolean(error) || undefined}
                 required
+                className="h-10"
               />
-            </div>
+            </Field>
 
-            <div>
-              <label className="block mb-2 text-(--text-primary)">
-                Password
-              </label>
-
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full p-4 rounded-xl bg-(--surface-muted) text-(--text-primary) outline-none pr-12"
-                  required
-                />
+            <Field data-invalid={Boolean(error) || undefined}>
+              <div className="flex items-center justify-between gap-2">
+                <FieldLabel htmlFor="login-password">Password</FieldLabel>
                 <button
                   type="button"
-                  onClick={togglePasswordVisibility}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-(--text-muted) hover:text-(--text-primary) focus:outline-none"
+                  className="text-xs font-medium text-emerald-600 transition-colors duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] hover:text-emerald-500 dark:text-emerald-400"
                 >
-                  {showPassword ? (
-                    <AiOutlineEyeInvisible size={20} />
-                  ) : (
-                    <AiOutlineEye size={20} />
-                  )}
+                  Forgot password?
                 </button>
               </div>
-            </div>
+              <InputGroup className="h-10">
+                <InputGroupInput
+                  id="login-password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setError("");
+                  }}
+                  aria-invalid={Boolean(error) || undefined}
+                  required
+                />
+                <InputGroupAddon align="inline-end">
+                  <InputGroupButton
+                    type="button"
+                    size="icon-xs"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    onClick={() => setShowPassword((prev) => !prev)}
+                  >
+                    {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                  </InputGroupButton>
+                </InputGroupAddon>
+              </InputGroup>
+              {error ? <FieldError>{error}</FieldError> : null}
+            </Field>
 
-            {error && <div className="text-red-500 text-sm">{error}</div>}
+            <Field orientation="horizontal">
+              <Checkbox
+                id="remember-me"
+                checked={remember}
+                onCheckedChange={(checked) => setRemember(checked === true)}
+              />
+              <FieldLabel htmlFor="remember-me" className="font-normal">
+                Remember me
+              </FieldLabel>
+            </Field>
+          </FieldGroup>
 
-            <div className="flex justify-between">
-              <label className="text-(--text-primary)">
-                <input type="checkbox" />
-                <span className="ml-2">Remember me</span>
-              </label>
+          <Button
+            type="submit"
+            size="lg"
+            disabled={loading}
+            className="h-10 w-full bg-emerald-500 text-zinc-950 hover:bg-emerald-400 active:scale-[0.97] motion-safe:transition-[transform,background-color] motion-safe:duration-150 motion-safe:ease-[cubic-bezier(0.23,1,0.32,1)] dark:bg-emerald-400 dark:hover:bg-emerald-300"
+          >
+            {loading ? <Spinner data-icon="inline-start" /> : null}
+            {loading ? "Signing in..." : "Sign in"}
+          </Button>
 
-              <button className="text-emerald-500" type="button">
-                Forgot password?
-              </button>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-emerald-500 text-white py-4 rounded-xl hover:bg-emerald-600 disabled:bg-gray-400"
+          <FieldDescription className="text-center">
+            Don&apos;t have an account?{" "}
+            <Link
+              to="/signup"
+              className="font-medium text-emerald-600 underline-offset-4 transition-colors duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] hover:text-emerald-500 hover:underline dark:text-emerald-400"
             >
-              {loading ? "Signing In..." : "Sign In"}
-            </button>
-
-            <p className="text-center text-(--text-muted)">
-              Don't have an account?
-              <Link to="/signup" className="text-emerald-500 ml-2 font-medium">
-                Sign Up
-              </Link>
-            </p>
-          </form>
-        </div>
+              Sign up
+            </Link>
+          </FieldDescription>
+        </form>
       </div>
-    </div>
+    </AuthLayout>
   );
 };
 

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { FiLock, FiMinus, FiPlus, FiUnlock } from "react-icons/fi";
+import { LockIcon, MinusIcon, PlusIcon, UnlockIcon } from "lucide-react";
 import {
   getGoalById,
   computeGoalProgress,
-  formatCurrency,
-} from "../../utils/goalHelpers";
-import { updateStoredGoal } from "../../utils/goalsStorage";
-import { useAuth } from "../../context/AuthContext";
+} from "@/utils/goalHelpers";
+import { updateStoredGoal } from "@/utils/goalsStorage";
+import { useAuth } from "@/context/AuthContext";
+import { Button } from "@/components/ui/button";
 
 const GoalDetail = () => {
   const { id } = useParams();
@@ -94,112 +94,114 @@ const GoalDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6 text-slate-950">
-      <div className="mx-auto max-w-4xl space-y-6">
-        <button
-          type="button"
-          onClick={() => navigate("/dashboard/goals")}
-          className="text-sm font-semibold text-emerald-700"
-        >
-          ← Back to Goals
-        </button>
+    <div className="mx-auto w-full max-w-4xl">
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        className="mb-3 -ml-2 text-muted-foreground hover:text-foreground"
+        onClick={() => navigate("/dashboard/goals")}
+      >
+        Back to goals
+      </Button>
 
-        <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-          <section className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm">
-            <div className="flex items-center justify-between gap-4">
+      <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+        <section className="rounded-xl border border-border bg-card p-4 shadow-sm sm:p-5">
+          <h1 className="text-xl font-semibold tracking-tight text-card-foreground">
+            {goal.title}
+          </h1>
+
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            {[
+              { label: "Target", value: goal.target },
+              { label: "Saved", value: goal.saved, accent: true },
+              { label: "Progress", value: `${goal.percent}%` },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="rounded-lg border border-border bg-muted/40 p-3"
+              >
+                <p className="text-xs text-muted-foreground">{item.label}</p>
+                <p
+                  className={`mt-1.5 text-sm font-semibold ${
+                    item.accent
+                      ? "text-emerald-600 dark:text-emerald-400"
+                      : "text-foreground"
+                  }`}
+                >
+                  {item.value}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-4 rounded-lg border border-border bg-muted/30 p-3">
+            <p className="text-xs text-muted-foreground">Note</p>
+            <p className="mt-1.5 text-sm leading-relaxed text-foreground">
+              {goal.note || "No note added."}
+            </p>
+          </div>
+        </section>
+
+        <aside className="flex flex-col gap-4">
+          <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+            <div className="flex items-start justify-between gap-3">
               <div>
-                <h1 className="text-3xl font-bold text-slate-950">
-                  {goal.title}
-                </h1>
+                <p className="text-xs text-muted-foreground">Controls</p>
+                <h2 className="mt-0.5 text-sm font-semibold text-card-foreground">
+                  Manage this goal
+                </h2>
               </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={toggleLocked}
+              >
+                {locked ? (
+                  <LockIcon data-icon="inline-start" />
+                ) : (
+                  <UnlockIcon data-icon="inline-start" />
+                )}
+                {locked ? "Locked" : "Unlocked"}
+              </Button>
             </div>
 
-            <div className="mt-8 grid gap-5 sm:grid-cols-3">
-              <div className="rounded-3xl bg-slate-100 p-5 dark:bg-slate-800">
-                <p className="text-sm text-slate-500">Target</p>
-                <p className="mt-3 text-xl font-bold text-slate-950">
-                  {goal.target}
-                </p>
-              </div>
-              <div className="rounded-3xl bg-slate-100 p-5 dark:bg-slate-800">
-                <p className="text-sm text-slate-500">Saved</p>
-                <p className="mt-3 text-xl font-bold text-emerald-700">
-                  {goal.saved}
-                </p>
-              </div>
-              <div className="rounded-3xl bg-slate-100 p-5 dark:bg-slate-800">
-                <p className="text-sm text-slate-500">Progress</p>
-                <p className="mt-3 text-xl font-bold text-slate-950">
-                  {goal.percent}%
-                </p>
-              </div>
+            <div className="mt-4 flex flex-col gap-2">
+              <Button
+                type="button"
+                size="sm"
+                disabled={locked}
+                className="justify-between bg-emerald-500 text-zinc-950 hover:bg-emerald-400 disabled:opacity-50 dark:bg-emerald-400 dark:hover:bg-emerald-300"
+                onClick={() => handleAmount("Add Money")}
+              >
+                Add money
+                <PlusIcon data-icon="inline-end" />
+              </Button>
+              <Button
+                type="button"
+                size="sm"
+                variant="secondary"
+                disabled={locked}
+                className="justify-between"
+                onClick={() => handleAmount("Remove Money")}
+              >
+                Remove money
+                <MinusIcon data-icon="inline-end" />
+              </Button>
             </div>
+          </div>
 
-            <div className="mt-8 rounded-3xl border border-slate-200 bg-slate-50 p-6 dark:bg-slate-800/60">
-              <p className="text-sm text-slate-500">Goal note</p>
-              <p className="mt-3 text-base leading-relaxed text-slate-700">
-                {goal.note || "No note added."}
+          <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+            <p className="text-xs text-muted-foreground">Status</p>
+            <div className="mt-2 flex items-center justify-between gap-3">
+              <p className="text-sm font-semibold text-card-foreground">
+                {goal.status}
               </p>
+              <span className="size-2.5 rounded-full bg-emerald-500" />
             </div>
-          </section>
-
-          <aside className="space-y-5">
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-sm text-slate-500">Goal controls</p>
-                  <h2 className="mt-2 text-lg font-bold text-slate-950">
-                    Manage this goal
-                  </h2>
-                </div>
-                <button
-                  type="button"
-                  onClick={toggleLocked}
-                  className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
-                >
-                  {locked ? <FiLock /> : <FiUnlock />}
-                  {locked ? "Locked" : "Unlocked"}
-                </button>
-              </div>
-
-              <div className="mt-6 grid gap-4">
-                <button
-                  type="button"
-                  onClick={() => handleAmount("Add Money")}
-                  disabled={locked}
-                  className="rounded-3xl bg-emerald-600 px-5 py-4 text-sm font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-slate-300"
-                >
-                  <div className="flex items-center justify-between">
-                    <span>Add Money</span>
-                    <FiPlus />
-                  </div>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleAmount("Remove Money")}
-                  disabled={locked}
-                  className="rounded-3xl bg-slate-950 px-5 py-4 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
-                >
-                  <div className="flex items-center justify-between">
-                    <span>Remove Money</span>
-                    <FiMinus />
-                  </div>
-                </button>
-              </div>
-            </div>
-
-            <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-              <p className="text-sm font-semibold text-slate-500">Status</p>
-              <div className="mt-4 flex items-center justify-between gap-3">
-                <p className="text-lg font-bold text-slate-950">
-                  {goal.status}
-                </p>
-                <div className="h-3.5 w-3.5 rounded-full bg-emerald-600" />
-              </div>
-            </div>
-          </aside>
-        </div>
+          </div>
+        </aside>
       </div>
     </div>
   );

@@ -1,20 +1,23 @@
-import { FiMoon, FiSun } from "react-icons/fi";
-import { useTheme } from "../context/ThemeContext";
+import { MoonIcon, SunIcon } from "lucide-react";
+import { useTheme } from "@/context/ThemeContext";
+import { Button } from "@/components/ui/button";
 
 const ThemeToggle = ({ className = "" }) => {
   const { theme, toggleTheme } = useTheme();
   const isDarkTheme = theme === "dark";
 
   return (
-    <button
+    <Button
       type="button"
+      size="icon"
+      variant="ghost"
       onClick={toggleTheme}
-      className={`inline-flex h-11 w-11 items-center justify-center rounded-full border border-(--border) bg-(--surface) text-(--text-primary) shadow-sm transition hover:opacity-80 ${className}`.trim()}
+      className={`active:scale-[0.97] motion-safe:transition-transform motion-safe:duration-150 ${className}`.trim()}
       aria-label={isDarkTheme ? "Switch to light mode" : "Switch to dark mode"}
       title={isDarkTheme ? "Switch to light mode" : "Switch to dark mode"}
     >
-      {isDarkTheme ? <FiSun size={18} /> : <FiMoon size={18} />}
-    </button>
+      {isDarkTheme ? <SunIcon /> : <MoonIcon />}
+    </Button>
   );
 };
 
