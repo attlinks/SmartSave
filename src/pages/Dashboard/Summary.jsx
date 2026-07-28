@@ -58,8 +58,6 @@ const actions = [
   { label: "Withdraw", icon: FiDownload, bg: "bg-muted" },
 ];
 
-const transactions = [];
-
 const goalImageRules = [
   {
     image: "/images/goal1.jpg",
@@ -97,14 +95,15 @@ const Summary = () => {
 
   useEffect(() => {
     const refreshGoals = () => {
-      setGoals(getStoredGoals());
+      setGoals(getStoredGoals(user?.uid));
     };
 
+    refreshGoals();
     window.addEventListener("smartsave-goals-updated", refreshGoals);
     return () => {
       window.removeEventListener("smartsave-goals-updated", refreshGoals);
     };
-  }, []);
+  }, [user?.uid]);
 
   const handleDeleteGoal = async (goal) => {
     const shouldDelete = window.confirm(
@@ -214,7 +213,9 @@ const Summary = () => {
 
           <div className="divide-y divide-border">
             {goals.length === 0 ? (
-              <p className="py-5 text-sm text-muted-foreground">No goals yet.</p>
+              <p className="py-5 text-sm text-muted-foreground">
+                No goals yet.
+              </p>
             ) : (
               goals.map((goal) => (
                 <div
@@ -351,35 +352,21 @@ const Summary = () => {
           </div>
 
           <div className="flex flex-col gap-3">
-            {transactions.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
-                No transactions yet.
-              </p>
-            ) : (
-              transactions.map((item) => (
-                <div key={item.title + item.date} className="flex gap-3">
-                  <div className="grid size-8 place-items-center rounded-full bg-muted text-muted-foreground">
-                    <FiDownload />
-                  </div>
+            <div className="flex gap-3">
+              <div className="grid size-8 place-items-center rounded-full bg-muted text-muted-foreground">
+                <FiDownload />
+              </div>
 
-                  <div className="min-w-0 flex-1">
-                    <h3 className="truncate text-sm font-medium">{item.title}</h3>
-                    <p className="mt-0.5 text-xs text-muted-foreground">
-                      {item.date}
-                    </p>
-                  </div>
-                  <p
-                    className={`text-sm font-medium ${
-                      item.green
-                        ? "text-emerald-600 dark:text-emerald-400"
-                        : "text-destructive"
-                    }`}
-                  >
-                    {item.amount}
-                  </p>
-                </div>
-              ))
-            )}
+              <div className="min-w-0 flex-1">
+                <h3 className="truncate text-sm font-medium">Goal created</h3>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  No recent updates yet
+                </p>
+              </div>
+              <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
+                +0.00
+              </p>
+            </div>
           </div>
         </article>
       </aside>

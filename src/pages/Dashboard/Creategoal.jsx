@@ -1,13 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeftIcon, CalendarIcon, DollarSignIcon } from "lucide-react";
+import { ArrowLeftIcon, CalendarIcon } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { saveGoal } from "@/utils/goalsStorage";
 import { Button } from "@/components/ui/button";
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import {
   InputGroup,
   InputGroupAddon,
@@ -80,7 +76,7 @@ const Creategoal = () => {
                 <FieldLabel htmlFor="targetAmount">Target amount</FieldLabel>
                 <InputGroup className="h-9">
                   <InputGroupAddon>
-                    <DollarSignIcon />
+                    <span className="text-sm font-semibold">₦</span>
                   </InputGroupAddon>
                   <InputGroupInput
                     id="targetAmount"

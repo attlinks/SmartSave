@@ -7,6 +7,9 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/logo";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 const principles = [
   {
@@ -27,6 +30,12 @@ const principles = [
 ];
 
 const Smartinfo = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1500,
+      once: true,
+    });
+  }, []);
   return (
     <main className="min-h-[100dvh] bg-background text-foreground">
       <header className="absolute inset-x-0 top-0 z-20">
@@ -69,13 +78,22 @@ const Smartinfo = () => {
 
         <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pb-16 pt-28 sm:px-8 sm:pb-20 lg:pb-24">
           <div className="max-w-2xl motion-safe:animate-landing-copy">
-            <p className="mb-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <p
+              data-aos="fade-up"
+              className="mb-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl"
+            >
               Smart Save
             </p>
-            <h1 className="max-w-[14ch] text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl">
+            <h1
+              data-aos="fade-up"
+              className="max-w-[14ch] text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl"
+            >
               Save with purpose. Reach goals with calm focus.
             </h1>
-            <p className="mt-5 max-w-[42ch] text-base leading-relaxed text-zinc-300 sm:text-lg">
+            <p
+              data-aos="fade-right"
+              className="mt-5 max-w-[42ch] text-base leading-relaxed text-zinc-300 sm:text-lg"
+            >
               Turn one financial goal into steady progress you can actually
               finish.
             </p>
@@ -107,16 +125,22 @@ const Smartinfo = () => {
       <section className="border-t border-border bg-background">
         <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:py-28">
           <div className="max-w-md">
-            <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+            <h2
+              data-aos="fade-right"
+              className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl"
+            >
               Built for people who want clarity, not clutter.
             </h2>
-            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+            <p
+              data-aos="fade-right"
+              className="mt-4 text-base leading-relaxed text-muted-foreground"
+            >
               Smart Save keeps the path short: choose a goal, track what you put
               aside, and stay close to the finish line.
             </p>
           </div>
 
-          <ul className="grid gap-8 sm:grid-cols-1">
+          <ul data-aos="fade-left" className="grid gap-8 sm:grid-cols-1">
             {principles.map((item) => {
               const Icon = item.icon;
               return (
@@ -145,7 +169,10 @@ const Smartinfo = () => {
       <section className="border-t border-border bg-zinc-950 text-zinc-50">
         <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-16 sm:px-8 sm:py-20 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-xl">
-            <p className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
+            <p
+              data-aos="fade-up"
+              className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl"
+            >
               Ready when you are.
             </p>
             <p className="mt-3 max-w-[40ch] text-base leading-relaxed text-zinc-400">
