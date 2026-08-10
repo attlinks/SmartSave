@@ -1,17 +1,17 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import PreLogin from "./pages/PreLogin";
-import Signup from "./pages/Signup";
-import Login from "./pages/Login";
-import DashboardLayout from "./pages/Dashboard/DashboardLayout";
-import RequireAuth from "./components/RequireAuth";
+import PreLogin from "./pages/PreLogin.jsx";
+import Signup from "./pages/Signup.jsx";
+import Login from "./pages/Login.jsx";
+import DashboardLayout from "./pages/Dashboard/DashboardLayout.jsx";
+import RequireAuth from "./components/RequireAuth.jsx";
 
-import Summary from "./pages/Dashboard/Summary";
-import Creategoal from "./pages/Dashboard/Creategoal";
-import Goals from "./pages/Dashboard/Goals";
-import GoalDetail from "./pages/Dashboard/GoalDetail";
-import Profiles from "./pages/Dashboard/Profiles";
-import Notifications from "./pages/Dashboard/Notifications";
-import Settings from "./pages/Dashboard/Settings";
+import Summary from "./pages/Dashboard/Summary.jsx";
+import Creategoal from "./pages/Dashboard/Creategoal.jsx";
+import Goals from "./pages/Dashboard/Goals.jsx";
+import GoalDetail from "./pages/Dashboard/GoalDetail.jsx";
+import Profiles from "./pages/Dashboard/Profiles.jsx";
+import Notifications from "./pages/Dashboard/Notifications.jsx";
+import Settings from "./pages/Dashboard/Settings.jsx";
 
 const App = () => {
   return (
