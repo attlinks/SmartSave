@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import PreLogin from "./pages/PreLogin.jsx";
+import Prelogin from "./pages/Prelogin.jsx";
 import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx";
 import DashboardLayout from "./pages/Dashboard/DashboardLayout.jsx";
@@ -17,7 +17,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<PreLogin />} />
+        <Route path="/" element={<Prelogin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route
